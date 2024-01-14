@@ -1,0 +1,64 @@
+version: "3"
+services:
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: development
+    depends_on:
+      - mongodb
+      - cache
+    ports:
+      - "8081:4000"
+    volumes:
+      - .:/app
+      - ./node_modules:/home/nodejs/node_modules
+      - ./server/.env:/app/.env
+  mongodb:
+    image: mongo:5
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_USERNAME: ws
+      MONGO_INITDB_PASSWORD: password
+  postgres:
+    image: postgres:14-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: root
+      POSTGRES_DB: sample_db
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning
+    volumes: 
+      - cache:/data
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    environment:
+      RABBITMQ_DEFAULT_USER: root
+      RABBITMQ_DEFAULT_PASS: password
+    ports:
+        - 5672:5672
+        - 15672:15672
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq/
+      - rabbitmq-log:/var/log/rabbitmq
+volumes:
+  mongodb-data:
+  postgres-data:
+  rabbitmq-data:
+  rabbitmq-log:
+  cache:
