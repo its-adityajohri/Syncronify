@@ -1,24 +1,36 @@
-import React, { useState } from "react";
+'use client' 
 
-import "./Navbar.css";
-import { Link, NavLink } from "react-router-dom";
+// import React, { useState } from "react";
 
-export const Navbar = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
+// import "./Navbar.css";
+// import { Link, NavLink } from "react-router-dom";
 
+// export default Navbar = () => {
+//   const [menuOpen, setMenuOpen] = useState(false);
+
+//   return (
+//     <nav>
+//       <ul>
+//         <li>
+//           <NavLink to="/about">About</NavLink>
+//         </li>
+//         <li>
+//           <NavLink to="/services">Services</NavLink>
+//         </li>
+//         <li>
+//           <NavLink to="/contact">Contact</NavLink>
+//         </li>
+//       </ul>
+//     </nav>
+//   );
+// };
+
+import React from 'react'
+
+const Navbar = () => {
   return (
-    <nav>
-      <ul>
-        <li>
-          <NavLink to="/about">About</NavLink>
-        </li>
-        <li>
-          <NavLink to="/services">Services</NavLink>
-        </li>
-        <li>
-          <NavLink to="/contact">Contact</NavLink>
-        </li>
-      </ul>
-    </nav>
-  );
-};
+    <div>Navbar</div>
+  )
+}
+
+export default Navbar
