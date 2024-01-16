@@ -6,3 +6,5 @@
 /server/.env
 /server/error.log
 /client/node_modules
+/client/dist
+/client/.next

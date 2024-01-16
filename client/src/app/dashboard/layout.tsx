@@ -1,5 +1,5 @@
 import Navbar from '../../components/Navbar/Navbar';
-import Sidebar from '../../components/Sidebar/Sidebar';
+import SideBar from '../../components/Sidebar/SideBar';
 
 export default function DashboardLayout({
     children, // will be a page or nested layout
@@ -8,7 +8,7 @@ export default function DashboardLayout({
   }) {
     return (
       <section>
-        <Sidebar/>
+        <SideBar/>
         <Navbar/>    
         {children}
       </section>
