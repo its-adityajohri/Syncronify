@@ -8,5 +8,3 @@
 /client/node_modules
 /client/dist
 /client/.next
-.next/
-/client/.next/
