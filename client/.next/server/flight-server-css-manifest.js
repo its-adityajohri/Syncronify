@@ -16,6 +16,10 @@ self.__RSC_CSS_MANIFEST={
     "C:\\Aditya\\WebD_lvlup\\CS253-Project\\CS253-Main-Repo\\client\\src\\app\\dashboard\\page": [
       "C:\\Aditya\\WebD_lvlup\\CS253-Project\\CS253-Main-Repo\\client\\src\\app\\globals.css",
       "C:\\Aditya\\WebD_lvlup\\CS253-Project\\CS253-Main-Repo\\client\\node_modules\\next\\font\\google\\target.css?{\"path\":\"src\\\\app\\\\layout.tsx\",\"import\":\"Inter\",\"arguments\":[{\"subsets\":[\"latin\"]}],\"variableName\":\"inter\"}"
+    ],
+    "C:\\Aditya\\WebD_lvlup\\CS253-Project\\CS253-Main-Repo\\client\\src\\app\\dashboard\\create-personal-event\\page": [
+      "C:\\Aditya\\WebD_lvlup\\CS253-Project\\CS253-Main-Repo\\client\\src\\app\\globals.css",
+      "C:\\Aditya\\WebD_lvlup\\CS253-Project\\CS253-Main-Repo\\client\\node_modules\\next\\font\\google\\target.css?{\"path\":\"src\\\\app\\\\layout.tsx\",\"import\":\"Inter\",\"arguments\":[{\"subsets\":[\"latin\"]}],\"variableName\":\"inter\"}"
     ]
   }
 }
