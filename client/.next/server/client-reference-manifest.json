@@ -230,9 +230,9 @@
         "async": false
       }
     },
-    "(app-client)/./src/components/Navbar/Navbar.jsx": {
+    "(app-client)/./src/components/Navbar/Navbar.tsx": {
       "*": {
-        "id": "(sc_client)/./src/components/Navbar/Navbar.jsx",
+        "id": "(sc_client)/./src/components/Navbar/Navbar.tsx",
         "name": "*",
         "chunks": [
           "app/dashboard/layout:static/chunks/app/dashboard/layout.js"
@@ -240,7 +240,7 @@
         "async": false
       },
       "": {
-        "id": "(sc_client)/./src/components/Navbar/Navbar.jsx",
+        "id": "(sc_client)/./src/components/Navbar/Navbar.tsx",
         "name": "",
         "chunks": [
           "app/dashboard/layout:static/chunks/app/dashboard/layout.js"
@@ -248,7 +248,7 @@
         "async": false
       },
       "default": {
-        "id": "(sc_client)/./src/components/Navbar/Navbar.jsx",
+        "id": "(sc_client)/./src/components/Navbar/Navbar.tsx",
         "name": "default",
         "chunks": [
           "app/dashboard/layout:static/chunks/app/dashboard/layout.js"
@@ -256,9 +256,9 @@
         "async": false
       }
     },
-    "(app-client)/./src/components/Sidebar/Sidebar.jsx": {
+    "(app-client)/./src/components/Sidebar/SideBar.tsx": {
       "*": {
-        "id": "(sc_client)/./src/components/Sidebar/Sidebar.jsx",
+        "id": "(sc_client)/./src/components/Sidebar/SideBar.tsx",
         "name": "*",
         "chunks": [
           "app/dashboard/layout:static/chunks/app/dashboard/layout.js"
@@ -266,7 +266,7 @@
         "async": false
       },
       "": {
-        "id": "(sc_client)/./src/components/Sidebar/Sidebar.jsx",
+        "id": "(sc_client)/./src/components/Sidebar/SideBar.tsx",
         "name": "",
         "chunks": [
           "app/dashboard/layout:static/chunks/app/dashboard/layout.js"
@@ -274,7 +274,7 @@
         "async": false
       },
       "default": {
-        "id": "(sc_client)/./src/components/Sidebar/Sidebar.jsx",
+        "id": "(sc_client)/./src/components/Sidebar/SideBar.tsx",
         "name": "default",
         "chunks": [
           "app/dashboard/layout:static/chunks/app/dashboard/layout.js"
@@ -976,48 +976,48 @@
         "static/css/app/layout.css"
       ]
     },
-    "C:\\Aditya\\WebD_lvlup\\CS253-Project\\CS253-Main-Repo\\client\\src\\components\\Navbar\\Navbar.jsx": {
-      "id": "(app-client)/./src/components/Navbar/Navbar.jsx",
+    "C:\\Aditya\\WebD_lvlup\\CS253-Project\\CS253-Main-Repo\\client\\src\\components\\Navbar\\Navbar.tsx": {
+      "id": "(app-client)/./src/components/Navbar/Navbar.tsx",
       "name": "*",
       "chunks": [
         "app/dashboard/layout:static/chunks/app/dashboard/layout.js"
       ],
       "async": false
     },
-    "C:\\Aditya\\WebD_lvlup\\CS253-Project\\CS253-Main-Repo\\client\\src\\components\\Navbar\\Navbar.jsx#": {
-      "id": "(app-client)/./src/components/Navbar/Navbar.jsx",
+    "C:\\Aditya\\WebD_lvlup\\CS253-Project\\CS253-Main-Repo\\client\\src\\components\\Navbar\\Navbar.tsx#": {
+      "id": "(app-client)/./src/components/Navbar/Navbar.tsx",
       "name": "",
       "chunks": [
         "app/dashboard/layout:static/chunks/app/dashboard/layout.js"
       ],
       "async": false
     },
-    "C:\\Aditya\\WebD_lvlup\\CS253-Project\\CS253-Main-Repo\\client\\src\\components\\Navbar\\Navbar.jsx#default": {
-      "id": "(app-client)/./src/components/Navbar/Navbar.jsx",
+    "C:\\Aditya\\WebD_lvlup\\CS253-Project\\CS253-Main-Repo\\client\\src\\components\\Navbar\\Navbar.tsx#default": {
+      "id": "(app-client)/./src/components/Navbar/Navbar.tsx",
       "name": "default",
       "chunks": [
         "app/dashboard/layout:static/chunks/app/dashboard/layout.js"
       ],
       "async": false
     },
-    "C:\\Aditya\\WebD_lvlup\\CS253-Project\\CS253-Main-Repo\\client\\src\\components\\Sidebar\\Sidebar.jsx": {
-      "id": "(app-client)/./src/components/Sidebar/Sidebar.jsx",
+    "C:\\Aditya\\WebD_lvlup\\CS253-Project\\CS253-Main-Repo\\client\\src\\components\\Sidebar\\SideBar.tsx": {
+      "id": "(app-client)/./src/components/Sidebar/SideBar.tsx",
       "name": "*",
       "chunks": [
         "app/dashboard/layout:static/chunks/app/dashboard/layout.js"
       ],
       "async": false
     },
-    "C:\\Aditya\\WebD_lvlup\\CS253-Project\\CS253-Main-Repo\\client\\src\\components\\Sidebar\\Sidebar.jsx#": {
-      "id": "(app-client)/./src/components/Sidebar/Sidebar.jsx",
+    "C:\\Aditya\\WebD_lvlup\\CS253-Project\\CS253-Main-Repo\\client\\src\\components\\Sidebar\\SideBar.tsx#": {
+      "id": "(app-client)/./src/components/Sidebar/SideBar.tsx",
       "name": "",
       "chunks": [
         "app/dashboard/layout:static/chunks/app/dashboard/layout.js"
       ],
       "async": false
     },
-    "C:\\Aditya\\WebD_lvlup\\CS253-Project\\CS253-Main-Repo\\client\\src\\components\\Sidebar\\Sidebar.jsx#default": {
-      "id": "(app-client)/./src/components/Sidebar/Sidebar.jsx",
+    "C:\\Aditya\\WebD_lvlup\\CS253-Project\\CS253-Main-Repo\\client\\src\\components\\Sidebar\\SideBar.tsx#default": {
+      "id": "(app-client)/./src/components/Sidebar/SideBar.tsx",
       "name": "default",
       "chunks": [
         "app/dashboard/layout:static/chunks/app/dashboard/layout.js"
