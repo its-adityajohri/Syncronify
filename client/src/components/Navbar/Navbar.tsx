@@ -1,5 +1,6 @@
 'use client' 
 
+import Link from 'next/link'
 // import React, { useState } from "react";
 
 // import "./Navbar.css";
@@ -29,7 +30,11 @@ import React from 'react'
 
 const Navbar = () => {
   return (
-    <div>Navbar</div>
+    <nav className='p-2 flex'>
+      <div className="flex">
+        <Link href='/' className="p-2 rounded-full text-white bg-fuchsia-900">S.F</Link>
+      </div>
+    </nav>
   )
 }
 
