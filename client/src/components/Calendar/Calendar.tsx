@@ -5,16 +5,14 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 // import listPlugin from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import { DateClickArg } from '@fullcalendar/interaction';
 import { useState } from 'react';
 
-export interface event{
-  e:object,
-}
 const Calendar = () => {
   const [allEvents, setAllEvents]=useState([{key:1, title:"test Event", date:"2024-01-06", time:"06:00:00"}])
 
 
-  const handleClick=(e:event)=>{
+  const handleDateClick=(e: DateClickArg)=>{
     console.log(e)
   }
 
@@ -36,7 +34,7 @@ const Calendar = () => {
         //   // Add more events as needed
         // ]
       }
-        dateClick={handleClick}
+        dateClick={handleDateClick}
         height={500}
         editable
         selectable
