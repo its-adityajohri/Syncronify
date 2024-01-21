@@ -18,4 +18,4 @@ const fetchuser = (req: any, res: Response, next: NextFunction) => {
 }
 
 
-module.exports = fetchuser;
+export default fetchuser;
