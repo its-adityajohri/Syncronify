@@ -230,7 +230,7 @@ import React from 'react'
 
 const SideBar = () => {
   return (
-    <div>SideBar</div>
+    <div className='min-w-fit  p-5 bg-gray-700 text-white min-h-[100vh]'>SideBar</div>
   )
 }
 
