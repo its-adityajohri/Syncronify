@@ -9,10 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@fullcalendar/common": "^5.11.5",
+    "@fullcalendar/core": "^6.1.10",
+    "@fullcalendar/interaction": "^6.1.10",
+    "@fullcalendar/react": "^6.1.10",
+    "@fullcalendar/timegrid": "^6.1.10",
     "next": "13.4.4",
-    "otp-generator": "^4.0.1",
+     "otp-generator": "^4.0.1",
     "react": "^18",
     "react-dom": "^18"
+    "react-toastify": "^10.0.4"
   },
   "devDependencies": {
     "@types/node": "^20",

@@ -1,0 +1,28 @@
+/* #mybutton {
+    border : 1px solid #6560c3;
+    background : none;
+    padding : 5px 15px;
+    font-size : 13px;
+    cursor: pointer;
+    margin : 10px;
+    transition : 0.8s;
+    overflow : hidden;
+}
+#mybutton{
+    color : #fff;
+}
+#mybutton :hover{
+    color : #6560c3
+} */
+
+/* #button::before{
+    content: 0;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 0%;
+    background: #6560c3;
+    z-index: -1;
+    transition: 0.8s;
+    top
+} */
