@@ -2,6 +2,7 @@ import Button from '@/components/Button/Button';
 import Calendar from '@/components/Calendar/Calendar';
 import Link from 'next/link';
 // import React from 'react'
+import Login from '@/components/Login/Login';
 
 const LandingPage = () => {
   return (
