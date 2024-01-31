@@ -15,7 +15,7 @@ const MapboxComponent = ({longitude='', latitude='', description=''}) => {
     const [userPosition, setUserPosition] = useState(undefined);
     useEffect(() => {
         navigator.geolocation.getCurrentPosition((pos) => {
-            setUserPosition([pos.coords.longitude, pos.coords.latitude]);
+            // setUserPosition([pos.coords.longitude, pos.coords.latitude]);
             });
         }, []);
 
@@ -77,7 +77,7 @@ const MapboxComponent = ({longitude='', latitude='', description=''}) => {
         }, [longitude, latitude, zoom, userPosition]);
 
     return (
-        <div className='map-container h-[100vh] v-full' ref={mapContainerRef} />
+        <div className='map-container w-[80vw] h-[80vh]' ref={mapContainerRef} />
     );
 };
 
