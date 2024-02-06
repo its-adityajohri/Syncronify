@@ -1,14 +1,14 @@
 "use client"
 
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function Login() {
 
-    const [username, setUsername] = React.useState('');
-    const [password, setPassword] = React.useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
 
     const notify = () => {
         return toast.success("Login successfully", {
@@ -30,10 +30,11 @@ function Login() {
         <>
             <div className='flex items-center justify-center w-full mt-24'>
                 <div className={`mx-auto w-full max-w-lg text-[#1B1B1B] bg-slate-100 rounded-xl p-10 border border-white/10`}>
-                    <div className="mb-2 flex justify-center">
-                        <span className="inline-block w-full max-w-[100px] p-10">
-                            <h1>LOGO</h1>
-                        </span>
+                    <div className="mx-auto text-5xl p-10 w-32 h-32">
+                        {/* <span className="inline-block w-full max-w-[100px] p-10"> */}
+                        <img src="" alt="SF" className='object-cover'/>
+                            {/* <h1 className='text-5xl p-10 font-bold'>SF</h1> */}
+                        {/* </span> */}
                     </div>
                     <h2 className="text-center text-2xl font-bold leading-tight">Sign in to your account</h2>
                     <p className="mt-2 text-center text-base text-[#1B1B1B]">
