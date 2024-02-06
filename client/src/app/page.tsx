@@ -1,24 +1,83 @@
 import Button from '@/components/Button/Button';
-import Calendar from '@/components/Calendar/Calendar';
 import Link from 'next/link';
 // import React from 'react'
 import Login from '@/components/Login/Login';
+import LandingCard from '@/components/LandingCard/LandingCard';
 
 const LandingPage = () => {
+  const user=true;
+  const cardDetail=[
+    {
+      logo:"card1.svg",
+      title:"Community",
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, nemo? Ullam labore omnis ipsam saepe explicabo quas minima, dicta architecto.",
+    },
+    {
+      logo:"card1.svg",
+      title:"Notes",
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, nemo? Ullam labore omnis ipsam saepe explicabo quas minima, dicta architecto.",
+    },
+    {
+      logo:"card1.svg",
+      title:"Navigation",
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, nemo? Ullam labore omnis ipsam saepe explicabo quas minima, dicta architecto.",
+    },
+    {
+      logo:"card1.svg",
+      title:"Calendar",
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, nemo? Ullam labore omnis ipsam saepe explicabo quas minima, dicta architecto.",
+    },
+    {
+      logo:"card1.svg",
+      title:"Events",
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, nemo? Ullam labore omnis ipsam saepe explicabo quas minima, dicta architecto.",
+    },
+  ]
   return (
-    <div className='p-5'>
-      <div className='flex gap-5 mt-10 items-center'>
-      <h1 className=''>Nav Links-</h1>
-      <Link href='dashboard'><Button title="Dashboard"/></Link>
-      <Link href='dashboard/navigation'>Navigation</Link>
-      <Link href='dashboard/event-page'>Events</Link>
-      <Link href='dashboard/public-channels'>Public Channel</Link>
-      <Link href='dashboard/public-events'>Public Events</Link>
-      <Link href='dashboard/user-profile'>Your Profile</Link>
-      <Link href='dashboard/your-groups'>Your Groups</Link>
-      <Link href='dashboard/your-notes'>Your Notes</Link>
-    </div>
-    <Calendar/>
+    <div className='m-5'>
+
+      {/* {{{============Landing Navigation Start======================}}} */}
+      <nav className='flex items-center mb-5'>
+        <div className="logo flex-1 flex gap-2">
+          <img src="logo.jpg" alt="SF" />
+          <h3 className="text-md font-bold">Syncronify</h3>
+        </div>
+        <div className="nav_links flex gap-5 items-center">
+          <Link href='#'>About Us</Link><span className='w-[3px] py-3 h-auto bg-gray-700/70 rounded-full'></span>
+          <Link href='#'>Contact Us</Link><span className='w-[2px] py-3 h-auto bg-gray-700/70 rounded-full'></span>
+          <Link href='authentication'>LogIn</Link><span className='w-[3px] py-3 h-auto bg-gray-700/70 rounded-full'></span>
+          <button className='border-2 border-gray-700/70 p-1 rounded-lg font-semibold bg-black text-white'>GET STARTED</button>
+        </div>
+      </nav>
+      {/* {{{============Landing Navigation End======================}}} */}
+      
+      {/* {{{============Landing Intro Start======================}}} */}
+      <section className="m-5 flex h-[500px]">
+        <div className="landing_pic flex-1 h-auto w-full">
+          <img src="landing.jpg" alt="Landing pic" />
+        </div>
+        <div className="discription flex-1 flex flex-col justify-center items-center m-auto gap-5">
+          <h1 className="text-5xl font-bold ">Write, plan, share.</h1><h1 className="text-5xl font-bold ">With us at your side.</h1>
+          <div className="text-md font-semibold">Swift Event Management, Seamless Team Collaboration, Superior Results!</div>
+          <button className='border-2 border-gray-700/70 p-1 rounded-lg font-semibold bg-black text-white'>GET STARTED</button>
+        </div>
+      </section>
+      {/* {{{============Landing Intro End======================}}} */}
+
+      {/* {{{============Feature Intro Start======================}}} */}
+      <section className="flex justify-between mx-20 -mt-32">
+        {/* <div className="w-[250px] h-[250px] bg-gray-100 rounded-2xl"></div>
+        <div className="w-[250px] h-[250px] bg-gray-100 rounded-2xl"></div>
+        <div className="w-[250px] h-[250px] bg-gray-100 rounded-2xl"></div>
+        <div className="w-[250px] h-[250px] bg-gray-100 rounded-2xl"></div>
+        <div className="w-[250px] h-[250px] bg-gray-100 rounded-2xl"></div> */}
+        {cardDetail.map((detail, i)=>(
+          <LandingCard detail={detail}/>
+        ))}
+        {/* <LandingCard/>
+        <LandingCard/> */}
+      </section>
+
     </div>
     
   )

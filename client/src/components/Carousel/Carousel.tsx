@@ -8,12 +8,12 @@ import CarouselIndicator from './CarouselIndicator';
 import { IoIosArrowBack } from 'react-icons/io';
 
 export interface CarouselProps {
-  width?: number;
-  height?: number;
+  // width?: number;
+  // height?: number;
   items: React.ReactNode[];
 }
 
-export default function Carousel({ width, height, items }: CarouselProps) {
+export default function Carousel({ items }: CarouselProps) {
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
   function handleNextItemBtn() {
