@@ -1,4 +1,6 @@
-FROM node:16.15.0 
+FROM node:16.15.0 as build
+
+ARG BUILD_ENV = prod
 
 WORKDIR /app-client    
 

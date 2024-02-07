@@ -14,10 +14,12 @@
     "@fullcalendar/interaction": "^6.1.10",
     "@fullcalendar/react": "^6.1.10",
     "@fullcalendar/timegrid": "^6.1.10",
+    "framer-motion": "^11.0.3",
     "next": "13.4.4",
-     "otp-generator": "^4.0.1",
+    "otp-generator": "^4.0.1",
     "react": "^18",
     "react-dom": "^18",
+    "react-icons": "^5.0.1",
     "react-toastify": "^10.0.4"
   },
   "devDependencies": {
