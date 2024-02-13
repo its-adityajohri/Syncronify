@@ -11,10 +11,10 @@ const Card = ({event}) => {
   
   return (
     <>
-      <div className = "absolute h-full w-full cursor-pointer overflow-hidden drop-shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-700 ease-in-out">
-        <div className ="flex flex-col items-center w-52 bg-white rounded-xl">
-            <img className = "p-2 w-30 rounded-xl object-cover" src = {event.source} alt="Raw Image" />
-            <div className = "p-3 w-30">
+      <div className = "h-full w-full cursor-pointer overflow-hidden  drop-shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-700 ease-in-out">
+        <div className ="flex flex-col items-center min-w-[200px] bg-gray-500/10 rounded-xl">
+            <img className = "p-2  rounded-xl object-cover" src = {event.source} alt="Raw Image" />
+            <div className = "p-3">
                 <h2 className = "font-bold text-large ">{event.title}</h2>
                 <p className = "text-sm text-gray-600">{event.description}</p>
             </div>

@@ -1,68 +1,60 @@
-'use client'
-import './Carousel.css'
-import React, { useState } from 'react';
+// 
 
-import CarouselItem from './CarouselItem';
-import CarouselIndicator from './CarouselIndicator';
+import React from 'react'
+import { SlArrowLeft, SlArrowRight } from "react-icons/sl"
+import Card from '../Card/Card'
 
-import { IoIosArrowBack } from 'react-icons/io';
-
-export interface CarouselProps {
-  // width?: number;
-  // height?: number;
-  items: React.ReactNode[];
-}
-
-export default function Carousel({ items }: CarouselProps) {
-  const [activeIndex, setActiveIndex] = useState<number>(0);
-
-  function handleNextItemBtn() {
-    setActiveIndex((prev) => {
-      return prev + 1 < items.length ? prev + 1 : prev;
-    });
-  }
-
-  function handlePrevItemBtn() {
-    setActiveIndex((prev) => {
-      return prev - 1 >= 0 ? prev - 1 : prev;
-    });
-  }
-
+const Carousel = () => {
+  const cardDetails=[
+    {
+      source:"card1.svg",
+      title:"Event 1",
+      description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur, nemo?",
+    },
+    {
+      source:"card1.svg",
+      title:"Event 2",
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus, obcaecati.",
+    },
+    {
+      source:"card1.svg",
+      title:"Event 3",
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, recusandae.",
+    },
+    {
+      source:"card1.svg",
+      title:"Event 4",
+      description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus, quod.",
+    },
+    {
+      source:"card1.svg",
+      title:"Event 5",
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, impedit!",
+    },
+    {
+      source:"card1.svg",
+      title:"Event 5",
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, impedit!",
+    },
+    {
+      source:"card1.svg",
+      title:"Event 5",
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, impedit!",
+    },
+  ]
   return (
-    <div className="carousel-container">
-      {activeIndex > 0 && (
-        <button
-          className="carousel-btn-switch-card-left carousel-btn-switch-card"
-          onClick={handlePrevItemBtn}
-        >
-          <IoIosArrowBack />
-        </button>
-      )}
-      {items?.map((item, index) => (
-        <CarouselItem key={index} index={index} activeIndex={activeIndex}>
-          {item}
-        </CarouselItem>
-      ))}
-      {activeIndex < items.length - 1 && (
-        <button
-          className="carousel-btn-switch-card-right carousel-btn-switch-card"
-          onClick={handleNextItemBtn}
-        >
-          <IoIosArrowBack
-            style={{
-              transform: 'rotate(180deg)',
-            }}
-          />
-        </button>
-      )}
-
-      <CarouselIndicator
-        activeIndex={activeIndex}
-        length={items.length}
-        onSetActiveIndex={(activeIndex) => {
-          setActiveIndex(activeIndex);
-        }}
-      />
+    <div className='p-5 min-h-[250px] '>
+      <div className="flex relative bg-gray-500/70">
+        <h3 className="text-3xl absolute -left-10 cursor-pointer font-bold"><SlArrowLeft/></h3>
+        <div className="absolute left-0 right-0 flex justify-around gap-10 mx-5 items-center">
+          {cardDetails.map((event,i)=>
+          <Card event={event}/>
+          )}
+        </div>
+        <h3 className="text-3xl absolute right-20 top-[40%] cursor-pointer font-bold"><SlArrowRight/></h3>
+      </div>
     </div>
-  );
+  )
 }
+
+export default Carousel

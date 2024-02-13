@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function Login() {
+function Login({handleClick}) {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -40,7 +40,7 @@ function Login() {
                     <p className="mt-2 text-center text-base text-[#1B1B1B]">
                         Don&apos;t have any account?&nbsp;
                         <Link
-                            href=""
+                            href="authentication" onClick={handleClick}
                             className="font-semibold text-primary text-blue-900 transition-all duration-200 hover:underline"
                         >
                             Sign Up

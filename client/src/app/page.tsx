@@ -1,10 +1,14 @@
+"use client"
 import Button from '@/components/Button/Button';
 import Link from 'next/link';
 // import React from 'react'
 import Login from '@/components/Login/Login';
 import LandingCard from '@/components/LandingCard/LandingCard';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 const LandingPage = () => {
+  const router=useRouter();
   const user=true;
   const cardDetail=[
     {
@@ -33,6 +37,11 @@ const LandingPage = () => {
       description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, nemo? Ullam labore omnis ipsam saepe explicabo quas minima, dicta architecto.",
     },
   ]
+
+  const handleNavigation=()=>{
+    router.push('/authentication');
+  }
+
   return (
     <div className='m-5'>
 
@@ -46,7 +55,7 @@ const LandingPage = () => {
           <Link href='#'>About Us</Link><span className='w-[3px] py-3 h-auto bg-gray-700/70 rounded-full'></span>
           <Link href='#'>Contact Us</Link><span className='w-[2px] py-3 h-auto bg-gray-700/70 rounded-full'></span>
           <Link href='authentication'>LogIn</Link><span className='w-[3px] py-3 h-auto bg-gray-700/70 rounded-full'></span>
-          <button className='border-2 border-gray-700/70 p-1 rounded-lg font-semibold bg-black text-white'>GET STARTED</button>
+          <button className='border-2 border-gray-700/70 p-1 rounded-lg font-semibold bg-black text-white' onClick={handleNavigation}>GET STARTED</button>
         </div>
       </nav>
       {/* {{{============Landing Navigation End======================}}} */}
@@ -59,7 +68,7 @@ const LandingPage = () => {
         <div className="discription flex-1 flex flex-col justify-center items-center m-auto gap-5">
           <h1 className="text-5xl font-bold ">Write, plan, share.</h1><h1 className="text-5xl font-bold ">With us at your side.</h1>
           <div className="text-md font-semibold">Swift Event Management, Seamless Team Collaboration, Superior Results!</div>
-          <button className='border-2 border-gray-700/70 p-1 rounded-lg font-semibold bg-black text-white'>GET STARTED</button>
+          <button className='border-2 border-gray-700/70 p-1 rounded-lg font-semibold bg-black text-white' onClick={handleNavigation}>GET STARTED</button>
         </div>
       </section>
       {/* {{{============Landing Intro End======================}}} */}
