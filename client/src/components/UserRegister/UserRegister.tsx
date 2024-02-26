@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function UserRegister() {
+function UserRegister({handleClick}) {
 
     const [username, setUsername] = React.useState('');
     const [email, setEmail] = React.useState('');
@@ -51,18 +51,24 @@ function UserRegister() {
     return (
         <>
             <div className="flex items-center justify-center w-full">
-                <div className={`mx-auto w-full max-w-lg bg-[#1B1B1B] text-slate-100 rounded-xl p-8 border border-white/10`}>
-                    <div className="mb-2 flex justify-center">
+                <div className={`mx-auto w-full max-w-lg text-[#1B1B1B] bg-slate-100 rounded-xl p-10 border border-white/10`}>
+                    {/* <div className="mb-2 flex justify-center">
                             <span className="inline-block w-full max-w-[100px] -m-2">
                                 <h1>Logo</h1>
                             </span>
+                    </div> */}
+                    <div className="mx-auto text-5xl p-10 w-32 h-32">
+                        {/* <span className="inline-block w-full max-w-[100px] p-10"> */}
+                        <img src="" alt="SF" className='object-cover'/>
+                            {/* <h1 className='text-5xl p-10 font-bold'>SF</h1> */}
+                        {/* </span> */}
                     </div>
                     <h2 className="text-center text-2xl font-bold leading-tight">Sign up to create account</h2>
-                    <p className="mt-2 text-center text-base text-slate-100/60">
+                    <p className="mt-2 text-center text-base text-[#1B1B1B]">
                         Already have an account?&nbsp;
                         <Link
-                            href="/"
-                            className="font-medium text-primary transition-all duration-200 hover:underline"
+                            href="authentication" onClick={handleClick}
+                            className="font-semibold text-primary text-blue-900 transition-all duration-200 hover:underline"
                         >
                             Sign In
                         </Link>
@@ -81,7 +87,7 @@ function UserRegister() {
                                 value={username}
                                 readOnly={showOTP}
                                 onChange={(e) => setUsername(e.target.value)}
-                                className={`px-3 py-2 rounded-lg outline-none duration-200 border bg-[#1B1B1B] text-slate-50 border-gray-200 w-full focus:bg-gray-50 focus:text-black ${showOTP && 'opacity-50'}`}
+                                className={`px-3 py-2 rounded-lg outline-none duration-200 border text-[#1B1B1B] bg-slate-50 border-gray-200 w-full focus:text-gray-50 focus:bg-black ${showOTP && 'opacity-50'}`}
                                 placeholder='Username' />
                         </div>
 
@@ -96,7 +102,7 @@ function UserRegister() {
                                 value={email}
                                 readOnly={showOTP}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className={`px-3 py-2 rounded-lg outline-none duration-200 border bg-[#1B1B1B] text-slate-50 border-gray-200 w-full focus:bg-gray-50 focus:text-black ${showOTP && 'opacity-50'}`}
+                                className={`px-3 py-2 rounded-lg outline-none duration-200 border text-[#1B1B1B] bg-slate-50 border-gray-200 w-full focus:text-gray-50 focus:bg-black ${showOTP && 'opacity-50'}`}
                                 placeholder='Email' />
                         </div>
 
@@ -111,13 +117,13 @@ function UserRegister() {
                                 value={password}
                                 readOnly={showOTP}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className={`px-3 py-2 rounded-lg outline-none duration-200 border bg-[#1B1B1B] text-slate-50 border-gray-200 w-full focus:bg-gray-50 focus:text-black ${showOTP && 'opacity-50'}`}
+                                className={`px-3 py-2 rounded-lg outline-none duration-200 border text-[#1B1B1B] bg-slate-50 border-gray-200 w-full focus:text-gray-50 focus:bg-black ${showOTP && 'opacity-50'}`}
                                 placeholder='Password' />
                         </div>
 
                         <div className='space-y-5 pt-4'>
                             <button
-                            className={`w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded`}
+                            className={`w-full bg-slate-900 hover:bg-slate-950 text-slate-50 font-bold py-2 px-4 rounded-lg`}
                             >SignUp</button>
                         </div>
                     </form>
@@ -135,12 +141,12 @@ function UserRegister() {
                                     id="otp"
                                     value={otp}
                                     onChange={(e) => setOTP(e.target.value)}
-                                    className={`px-3 py-2 rounded-lg outline-none duration-200 border bg-[#1B1B1B] text-slate-50 border-gray-200 w-full focus:bg-gray-50 focus:text-black `}
+                                    className={`px-3 py-2 rounded-lg outline-none duration-200 border text-[#1B1B1B] bg-slate-50 border-gray-200 w-full focus:text-gray-50 focus:bg-black`}
                                     />
                             </div>
                             <div className='space-y-5 pt-4'>
                                 <button
-                                className={`w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded`}
+                                className={`w-full bg-slate-900 hover:bg-slate-950 text-slate-50 font-bold py-2 px-4 rounded-lg`}
                                 >Verify</button>
                             </div>
                         </form>
