@@ -1,38 +1,45 @@
 "use client"
-import Button from '@/components/Button/Button';
+// import Button from '@/components/Button/Button';
 import Link from 'next/link';
 // import React from 'react'
+// import { FaFileAlt } from 'react-icons/fa';
 import Login from '@/components/Login/Login';
 import LandingCard from '@/components/LandingCard/LandingCard';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { FaCalendar, FaFileAlt, FaMap, FaUsers } from 'react-icons/fa';
+import { MdEvent} from 'react-icons/md';
 
 const LandingPage = () => {
   const router=useRouter();
   const user=true;
   const cardDetail=[
     {
-      logo:"card1.svg",
+      // logo:"card1.svg",
+      icon: FaUsers,
       title:"Community",
       description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, nemo? Ullam labore omnis ipsam saepe explicabo quas minima, dicta architecto.",
     },
     {
-      logo:"card1.svg",
+      // logo:"card1.svg",
+      icon: FaFileAlt,
       title:"Notes",
       description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, nemo? Ullam labore omnis ipsam saepe explicabo quas minima, dicta architecto.",
     },
     {
-      logo:"card1.svg",
+      // logo:"card1.svg",
+      icon: FaMap,
       title:"Navigation",
       description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, nemo? Ullam labore omnis ipsam saepe explicabo quas minima, dicta architecto.",
     },
     {
-      logo:"card1.svg",
+      // logo:"card1.svg",
+      icon: FaCalendar,
       title:"Calendar",
       description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, nemo? Ullam labore omnis ipsam saepe explicabo quas minima, dicta architecto.",
     },
     {
-      logo:"card1.svg",
+      // logo:"card1.svg",
+      icon: MdEvent,
       title:"Events",
       description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, nemo? Ullam labore omnis ipsam saepe explicabo quas minima, dicta architecto.",
     },
@@ -62,8 +69,8 @@ const LandingPage = () => {
       
       {/* {{{============Landing Intro Start======================}}} */}
       <section className="m-5 flex h-[500px]">
-        <div className="landing_pic flex-1 h-auto w-full">
-          <img src="landing.jpg" alt="Landing pic" />
+        <div className="landing_pic flex-1 h-10 w-10">
+          <img src="landing.png" alt="Landing pic" className='h-96 w-[400px] m-auto'/>
         </div>
         <div className="discription flex-1 flex flex-col justify-center items-center m-auto gap-5">
           <h1 className="text-5xl font-bold ">Write, plan, share.</h1><h1 className="text-5xl font-bold ">With us at your side.</h1>
@@ -74,7 +81,7 @@ const LandingPage = () => {
       {/* {{{============Landing Intro End======================}}} */}
 
       {/* {{{============Feature Intro Start======================}}} */}
-      <section className="flex justify-between mx-20 -mt-32">
+      <section className="flex gap-10 sm:gap-0 flex-wrap justify-between mx-20 -mt-32">
         {/* <div className="w-[250px] h-[250px] bg-gray-100 rounded-2xl"></div>
         <div className="w-[250px] h-[250px] bg-gray-100 rounded-2xl"></div>
         <div className="w-[250px] h-[250px] bg-gray-100 rounded-2xl"></div>
