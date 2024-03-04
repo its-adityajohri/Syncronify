@@ -4,8 +4,11 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/navigation';
 
 function Login({handleClick}) {
+
+    const router=useRouter();
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -24,6 +27,9 @@ function Login({handleClick}) {
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         notify();
+        setTimeout(() => {
+            router.push('/dashboard');
+        }, 5000);
     }
 
     return (

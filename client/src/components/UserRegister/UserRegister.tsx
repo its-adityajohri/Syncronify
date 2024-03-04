@@ -4,8 +4,11 @@ import React from 'react'
 import Link from 'next/link'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/navigation';
 
 function UserRegister({handleClick}) {
+
+    const router=useRouter();
 
     const [username, setUsername] = React.useState('');
     const [email, setEmail] = React.useState('');
@@ -46,6 +49,9 @@ function UserRegister({handleClick}) {
         e.preventDefault();
         setShowOTP(false);
         OTPVerifyNotify();
+        setTimeout(() => {
+            handleClick();
+        }, 5000);
     }
 
     return (
