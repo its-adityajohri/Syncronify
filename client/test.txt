@@ -1,0 +1,9 @@
+CS253 - Doc
+ml -  quiz - prob distribution, info and descision theory- 20-30 ques
+java - microservices project
+python - django project 
+postgres - 2 proj + in others - 3-4 proj total
+Docker - 2 videos
+AWS 
+
+
