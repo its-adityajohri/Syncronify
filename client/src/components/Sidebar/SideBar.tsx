@@ -91,11 +91,11 @@ const routes = [
 const SideBar = () => {
 
     
-  const handleSidebar=(arg)=>{
+  const handleSidebar=(arg: boolean | ((prevState: boolean) => boolean))=>{
     console.log(arg);
   setIsOpen(arg);
   }
-
+  
   const [isOpen, setIsOpen] = useState(false);
   const inputAnimation = {
     hidden: {
@@ -160,62 +160,6 @@ const SideBar = () => {
             <span className="px-8 py-4">{route.icon}</span>
           </Link>
         ))}
-          </div>
-          <div className="search">
-            <div className="search_icon">
-              <BiSearch />
-            </div>
-            <AnimatePresence>
-              {isOpen && (
-                <motion.input
-                  initial="hidden"
-                  animate="show"
-                  exit="hidden"
-                  variants={inputAnimation}
-                  type="text"
-                  placeholder="Search"
-                />
-              )}
-            </AnimatePresence>
-          </div>
-          <section className="routes">
-            {routes.map((route, index) => {
-              if (route.subRoutes) {
-                return (
-                  <SidebarMenu
-                    setIsOpen={setIsOpen}
-                    route={route}
-                    showAnimation={showAnimation}
-                    isOpen={isOpen}
-                  />
-                );
-              }
-
-              return (
-                <Link
-                  href={route.path}
-                  key={index}
-                  className="link"
-                >
-                  <div className="icon">{route.icon}</div>
-                  <AnimatePresence>
-                    {isOpen && (
-                      <motion.div
-                        variants={showAnimation}
-                        initial="hidden"
-                        animate="show"
-                        exit="hidden"
-                        className="link_text"
-                      >
-                        {route.name}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </Link>
-              );
-            })}
-          </section>
-        </motion.div>
       </div>
     </div>
   );
