@@ -1,60 +1,91 @@
-// 
+
 
 import React from 'react'
-import { SlArrowLeft, SlArrowRight } from "react-icons/sl"
-import Card from '../Card/Card'
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+// import Image from 'next/image';
 
-const Carousel = () => {
-  const cardDetails=[
-    {
-      source:"card1.svg",
-      title:"Event 1",
-      description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur, nemo?",
-    },
-    {
-      source:"card1.svg",
-      title:"Event 2",
-      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus, obcaecati.",
-    },
-    {
-      source:"card1.svg",
-      title:"Event 3",
-      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, recusandae.",
-    },
-    {
-      source:"card1.svg",
-      title:"Event 4",
-      description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus, quod.",
-    },
-    {
-      source:"card1.svg",
-      title:"Event 5",
-      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, impedit!",
-    },
-    {
-      source:"card1.svg",
-      title:"Event 5",
-      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, impedit!",
-    },
-    {
-      source:"card1.svg",
-      title:"Event 5",
-      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, impedit!",
-    },
-  ]
+
+
+
+const cardDetails=[
+  {
+    source:"card1.svg",
+    title:"Event 1",
+    description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur, nemo?",
+  },
+  {
+    source:"card1.svg",
+    title:"Event 2",
+    description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus, obcaecati.",
+  },
+  {
+    source:"card1.svg",
+    title:"Event 3",
+    description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, recusandae.",
+  },
+  {
+    source:"card1.svg",
+    title:"Event 4",
+    description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus, quod.",
+  },
+  {
+    source:"card1.svg",
+    title:"Event 5",
+    description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, impedit!",
+  },
+  {
+    source:"card1.svg",
+    title:"Event 6",
+    description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, impedit!",
+  },
+  {
+    source:"card1.svg",
+    title:"Event 7",
+    description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, impedit!",
+  },
+]
+
+
+const LocalCarousel = () => {
+
   return (
-    <div className='p-5 min-h-[250px] '>
-      <div className="flex relative bg-gray-500/70">
-        <h3 className="text-3xl absolute -left-10 cursor-pointer font-bold"><SlArrowLeft/></h3>
-        <div className="absolute left-0 right-0 flex justify-around gap-10 mx-5 items-center">
-          {cardDetails.map((event,i)=>
-          <Card event={event}/>
+    <div className='p-10'>
+      <Carousel className='m-auto w-[90%]'>
+        <CarouselContent >
+        {cardDetails.map((event,i)=>
+        <CarouselItem className='basis-1/5'>
+          <Card className='relative bg-gray-300/70 rounded-xl'>
+            {/* <Image alt='image' src='/carousel_bg.jpeg' fill className=''/> */}
+            <CardHeader>
+              <CardTitle>{event.title}</CardTitle>
+              <CardDescription>{event.description}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p>{event.description}</p>
+            </CardContent>
+          </Card>
+        </CarouselItem>
           )}
-        </div>
-        <h3 className="text-3xl absolute right-20 top-[40%] cursor-pointer font-bold"><SlArrowRight/></h3>
-      </div>
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+</Carousel>
     </div>
   )
 }
 
-export default Carousel
+export default LocalCarousel
