@@ -8,6 +8,10 @@ import LandingCard from '@/components/LandingCard/LandingCard';
 import { useRouter } from 'next/navigation';
 import { FaCalendar, FaFileAlt, FaMap, FaUsers } from 'react-icons/fa';
 import { MdEvent} from 'react-icons/md';
+// import ChatComponent from '@/components/Chat/chat';
+import ChatInterface from '@/components/Chat/ChatInterface';
+import ChatButton from '@/components/Chat/ChatButton';
+import { useState } from 'react';
 
 const LandingPage = () => {
   const router=useRouter();
@@ -48,6 +52,11 @@ const LandingPage = () => {
   const handleNavigation=()=>{
     router.push('/authentication');
   }
+  const [showChat, setShowChat] = useState(false);
+
+  const toggleChat = () => {
+    setShowChat(!showChat);
+  };
 
   return (
     <div className='m-5'>
@@ -93,7 +102,8 @@ const LandingPage = () => {
         {/* <LandingCard/>
         <LandingCard/> */}
       </section>
-
+      <ChatButton onClick={toggleChat} />
+      {showChat && <ChatInterface onClose={toggleChat} />}
     </div>
     
   )
