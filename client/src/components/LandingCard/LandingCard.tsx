@@ -3,7 +3,7 @@ import { FaUsers } from 'react-icons/fa'
 
 const LandingCard = ({detail}) => {
   return (
-    <div className='w-[250px] h-[320px] p-5 bg-gray-100 rounded-2xl truncate whitespace-normal'>
+    <div className='w-[250px] h-[320px] p-5 bg-gray-300 rounded-2xl truncate whitespace-normal'>
       <div className="flex flex-col gap-5 overflow-hidden">
         <div className="">
           {/* <{detail.icon} className='text-5xl'/> */}
