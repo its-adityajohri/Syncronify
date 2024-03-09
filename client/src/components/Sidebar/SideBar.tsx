@@ -91,7 +91,7 @@ const routes = [
 
 import { ReactNode } from 'react';
 
-const SideBar = ({ children }: { children: ReactNode }) => {
+const SideBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
   const inputAnimation = {
@@ -217,8 +217,6 @@ const SideBar = ({ children }: { children: ReactNode }) => {
             })}
           </section>
         </motion.div>
-
-        <main>{children}</main>
       </div>
     </>
   );
