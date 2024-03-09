@@ -67,22 +67,7 @@ const eventSchema = new mongoose.Schema({
   },
 });
 
-// Geocode & create location field
-// eventSchema.pre('save', async function(next) {
-//   if (this.isModified('venue') || this.isNew) {
-//     const loc = await geocoder.geocode(`${this.venue.latitude},${this.venue.longitude}`);
-//     this.location = {
-//       // Assuming the geocoder returns an array with the formatted address
-//       type: 'Point',
-//       coordinates: [loc[0].longitude, loc[0].latitude],
-//       formattedAddress: loc[0].formattedAddress,
-//     };
 
-//     // Do not save the original venue coordinates
-//     this.venue = undefined;
-//   }
-//   next();
-// });
 
 // Instance method to check if the event capacity has been reached
 eventSchema.methods.isFull = function() {
@@ -102,3 +87,20 @@ eventSchema.methods.addAttendee = async function(userId: number) {
 const Event: EventModelInterface = mongoose.model<IEvent>('Event', eventSchema);
 
 module.exports = Event;
+
+// Geocode & create location field
+// eventSchema.pre('save', async function(next) {
+//   if (this.isModified('venue') || this.isNew) {
+//     const loc = await geocoder.geocode(`${this.venue.latitude},${this.venue.longitude}`);
+//     this.location = {
+//       // Assuming the geocoder returns an array with the formatted address
+//       type: 'Point',
+//       coordinates: [loc[0].longitude, loc[0].latitude],
+//       formattedAddress: loc[0].formattedAddress,
+//     };
+
+//     // Do not save the original venue coordinates
+//     this.venue = undefined;
+//   }
+//   next();
+// });
