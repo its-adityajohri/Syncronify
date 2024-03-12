@@ -4,6 +4,7 @@ import LocalCarousel from '@/components/Carousel/Carousel';
 import Carousel from '@/components/Carousel/Carousel'
 import React, { useState } from 'react'
 import { FaLocationArrow, FaPlus } from 'react-icons/fa';
+import EventPage from '@/components/EventPage/EventPage';
 
 const dashboard = () => {
 
@@ -11,7 +12,7 @@ const dashboard = () => {
   const [isCreateActive, setIsCreateActive] = useState(false);
   const[allEvents, setAllEvents]=useState([]);
 
-  const handleCreateActive=(toggleActive)=>{
+  const handleCreateActive=(toggleActive: boolean | ((prevState: boolean) => boolean))=>{
     setIsCreateActive(toggleActive);
   }
 
