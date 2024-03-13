@@ -12,6 +12,7 @@ import { MdEvent} from 'react-icons/md';
 import ChatInterface from '@/components/Chat/ChatInterface';
 import ChatButton from '@/components/Chat/ChatButton';
 import { useState } from 'react';
+import Contacts from '@/components/Contacts/Contacts';
 
 const LandingPage = () => {
   const router=useRouter();
@@ -104,6 +105,8 @@ const LandingPage = () => {
       </section>
       <ChatButton onClick={toggleChat} />
       {showChat && <ChatInterface onClose={toggleChat} />}
+      <Contacts/>
+      
     </div>
     
   )
