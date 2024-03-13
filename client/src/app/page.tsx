@@ -13,6 +13,7 @@ import ChatInterface from '@/components/Chat/ChatInterface';
 import ChatButton from '@/components/Chat/ChatButton';
 import { useState } from 'react';
 import Contacts from '@/components/Contacts/Contacts';
+// import '../components/Chat/chatStyles.css'
 
 const LandingPage = () => {
   const router=useRouter();
