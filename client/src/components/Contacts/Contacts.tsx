@@ -11,16 +11,16 @@ const ContactPage = () => {
   const [activeUser, setActiveUser] = useState<string | null>(null);
 
   const users = [
-    { id: 'user1', name: 'User 1' },
-    { id: 'user2', name: 'User 2' },
-    { id: 'user3', name: 'User 3' },
-    { id: 'user4', name: 'User 4' },
-    { id: 'user5', name: 'User 5' },
-    { id: 'user6', name: 'User 1' },
-    { id: 'user7', name: 'User 2' },
-    { id: 'user8', name: 'User 3' },
-    { id: 'user9', name: 'User 4' },
-    { id: 'user91', name: 'User 5' },
+    { id: 'user1', name: 'User 1', profilePic: '/landing.png'},
+    { id: 'user2', name: 'User 2', profilePic: '/card1.svg'},
+    { id: 'user3', name: 'User 3', profilePic: '/card1.svg'},
+    { id: 'user4', name: 'User 4', profilePic: '/card1.svg'},
+    { id: 'user5', name: 'User 5', profilePic: '/card1.svg'},
+    { id: 'user6', name: 'User 1', profilePic: '/card1.svg'},
+    { id: 'user7', name: 'User 2', profilePic: '/card1.svg'},
+    { id: 'user8', name: 'User 3', profilePic: '/card1.svg'},
+    { id: 'user9', name: 'User 4', profilePic: '/card1.svg'},
+    { id: 'user91', name: 'User 5', profilePic: '/card1.svg'},
     // Add more users as needed
   ];
 
@@ -39,7 +39,7 @@ const ContactPage = () => {
             onClick={() => handleUserClick(user.id)}
           >
             <div>
-              <img src="/card1.svg" alt="img" className='w-10 h-10 rounded-full object-cover'/>
+              <img src={user.profilePic} alt="img" className='w-10 h-10 rounded-full object-cover'/>
             </div>
             <div className="font-semibold">
               {user.name}
@@ -56,7 +56,7 @@ const ContactPage = () => {
             style={{ display: activeUser === user.id ? 'block' : 'none' }}
           >
             <div className="flex items-center gap-5 bg-white pb-2">
-              <img src="/card1.svg" alt="img" className='w-10 h-10 rounded-full object-cover'/>
+              <img src={user.profilePic} alt="img" className='w-10 h-10 rounded-full object-cover'/>
               <div className="font-semibold text-xl">
                 {user.name}
               </div>

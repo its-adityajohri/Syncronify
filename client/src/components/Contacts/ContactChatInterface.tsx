@@ -13,7 +13,8 @@ const ContactChatInterface: React.FC<ContactChatInterfaceProps> = ({ onClose }) 
     setMessage(event.target.value);
   };
 
-  const handleSendClick = () => {
+  const handleSendClick = (e) => {
+    e.preventDefault()
     if (message.trim() !== '') {
       setMessages([...messages, message]);
       setMessage('');
@@ -21,31 +22,31 @@ const ContactChatInterface: React.FC<ContactChatInterfaceProps> = ({ onClose }) 
   };
 
   return (
-    <div className="chat-interface">
-      <div className="header">
+    <div className="interface">
+      <div className="">
         {/* <h2>Chat Interface</h2> */}
         {/* <button onClick={onClose} className="close-button">
           Close
         </button> */}
       </div>
-      <div className="chat-messages items-end gap-1">
+      <div className="chatMessages flex justify-end items-end gap-1">
         {messages.map((msg, index) => (
-          <div key={index} className="message rounded-[5px] bg-gray-300/70">
+          <div key={index} className="contactMessage rounded-[5px] bg-gray-300/70">
             {msg}
           </div>
         ))}
       </div>
-      <div className="input-area">
+      <form onSubmit={handleSendClick} className="inputArea">
         <input
           type="text"
           placeholder="Type your message..."
           value={message}
           onChange={handleInputChange}
         />
-        <button onClick={handleSendClick} className="send-button">
+        <button className="sendButton">
           Send
         </button>
-      </div>
+      </form>
     </div>
   );
 };

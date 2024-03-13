@@ -6,7 +6,7 @@
     max-height: 83vh;
     margin-top: 20px;
   }
-  .send-button {
+  .sendButton {
     background-color: #000000;
     color: white;
     border: none;
@@ -15,7 +15,7 @@
     border-radius: 5px;
     cursor: pointer;
   }
-  .message{
+  .contactMessage{
 
     max-width: 350px;
     padding: 2px 5px;
@@ -63,13 +63,13 @@
   .chat:last-child {
     margin-bottom: 0;
   }
-  .chat-interface {
+  .interface {
     width: 100%;
     background-color: white;
     border: 1px solid #ddd;
     border-radius: 5px;
   }
-  .chat-messages {
+  .chatMessages {
     height: 20.2rem;
     overflow-y: scroll;
     padding: 10px;
@@ -77,13 +77,13 @@
     flex-direction: column;
     align-items:right;
   }
-  .input-area {
+  .inputArea {
     display: flex;
     align-items: center;
     padding: 10px;
 
   }
-  .input-area input {
+  .inputArea input {
     flex: 1;
     padding: 8px;
     border: 1px solid #ddd;

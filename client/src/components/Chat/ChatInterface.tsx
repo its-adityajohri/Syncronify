@@ -14,7 +14,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onClose }) => {
     setMessage(event.target.value);
   };
 
-  const handleSendClick = () => {
+  const handleSendClick = (e) => {
+    e.preventDefault()
     if (message.trim() !== '') {
       setMessages([...messages, message]);
       setMessage('');
@@ -29,24 +30,24 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onClose }) => {
           Close
         </button>
       </div>
-      <div className="chat-messages items-end gap-1">
+      <div className="chat-messages flex justify-end items-end gap-1">
         {messages.map((msg, index) => (
           <div key={index} className="message rounded-[5px] bg-gray-300/70">
             {msg}
           </div>
         ))}
       </div>
-      <div className="input-area">
+      <form onSubmit={handleSendClick} className="input-area">
         <input
           type="text"
           placeholder="Type your message..."
           value={message}
           onChange={handleInputChange}
         />
-        <button onClick={handleSendClick} className="send-button">
+        <button className="send-button">
           Send
         </button>
-      </div>
+      </form>
     </div>
   );
 };
