@@ -133,14 +133,14 @@ const SideBar = () => {
 
   return (
     <div className="relative min-w-10 pt-2 text-white bg-[#0f172a] min-h-[100vh]">
-    <div className={isOpen?"absolute left-0 z-10 top-0 bottom-0 w-72 bg-[#0f172a]":"hidden"}>
+    <div className={`transition-all duration-500 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} absolute left-0 z-10 top-0 bottom-0 w-72 bg-[#0f172a]`} onMouseLeave={()=>handleSidebar(false)}>
       <div className="p-2 text-white font-semibold">
         <div className="flex justify-between items-center m-5">
           <span>Sincronify</span>
           <span className="px-3 font-bold py-1 rounded-lg bg-black">X</span>
         </div>
         <hr color="black"/>
-        <div className="flex flex-col items-center" onMouseLeave={()=>handleSidebar(false)}>
+        <div className="flex flex-col items-center">
           {routes.map((route)=>(
             <div className="w-full m-2">
               <Link href={route.path} className="w-[100%] flex justify-between items-center hover:bg-gray-900">
@@ -153,14 +153,16 @@ const SideBar = () => {
         </div>
       </div>
     </div>
+    <div className="" onMouseEnter={()=>handleSidebar(true)}>  
       <div className="rounded-full w-10 h-10 text-center bg-black p-2 mb-8 mx-auto">SF</div>
-      <div className="flex flex-col text-xl items-center" onMouseEnter={()=>handleSidebar(true)}>
+      <div className="flex flex-col text-xl items-center">
         {routes.map((route)=>(
           <Link href={route.path} className="w-[100%] flex justify-center hover:bg-gray-900">
             <span className="px-8 py-4">{route.icon}</span>
           </Link>
         ))}
       </div>
+    </div>
     </div>
   );
 };
