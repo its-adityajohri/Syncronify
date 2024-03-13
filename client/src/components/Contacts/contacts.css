@@ -1,9 +1,9 @@
-/* styles/contact.css */
 
 .container {
     display: flex;
     justify-content: space-between;
     width: 100%;
+    max-height: 83vh;
     margin-top: 20px;
   }
   .send-button {
@@ -16,14 +16,14 @@
     cursor: pointer;
   }
   .message{
-    /* background-color: rgb(67, 173, 67); */
-    /* min-width:fit-content ; */
+
     max-width: 350px;
     padding: 2px 5px;
   }
   .usersList {
     flex: 1;
     background-color: #fff;
+    overflow-y: scroll;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -55,7 +55,7 @@
   
   .chat {
     margin-bottom: 10px;
-    padding: 5px;
+    padding: px;
     border-radius: 5px;
     background-color: #f2f2f2;
   }
@@ -70,20 +70,18 @@
     border-radius: 5px;
   }
   .chat-messages {
-    height: 200px;
+    height: 21.5rem;
     overflow-y: scroll;
     padding: 10px;
     display:flex;
     flex-direction: column;
     align-items:right;
-    /* justify-content: end; */
   }
   .input-area {
     display: flex;
     align-items: center;
     padding: 10px;
-    /* height: 100px; */
-    /* width: 10px; */
+
   }
   .input-area input {
     flex: 1;

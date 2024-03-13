@@ -12,7 +12,7 @@ import { MdEvent} from 'react-icons/md';
 import ChatInterface from '@/components/Chat/ChatInterface';
 import ChatButton from '@/components/Chat/ChatButton';
 import { useState } from 'react';
-import Contacts from '@/components/Contacts/Contacts';
+// import Contacts from '@/components/Contacts/Contacts';
 // import '../components/Chat/chatStyles.css'
 
 const LandingPage = () => {
@@ -106,8 +106,6 @@ const LandingPage = () => {
       </section>
       <ChatButton onClick={toggleChat} />
       {showChat && <ChatInterface onClose={toggleChat} />}
-      <Contacts/>
-      
     </div>
     
   )

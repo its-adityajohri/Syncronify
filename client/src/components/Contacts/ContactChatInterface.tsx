@@ -1,10 +1,11 @@
 "use client"
+import './contacts.css';
 import React, { useState } from 'react';
-interface ChatInterfaceProps {
+interface ContactChatInterfaceProps {
   onClose: () => void;
 }
 
-const ChatInterface: React.FC<ChatInterfaceProps> = ({ onClose }) => {
+const ContactChatInterface: React.FC<ContactChatInterfaceProps> = ({ onClose }) => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<string[]>([]);
 
@@ -49,4 +50,4 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onClose }) => {
   );
 };
 
-export default ChatInterface;
+export default ContactChatInterface;

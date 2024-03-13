@@ -15,6 +15,11 @@ const ContactPage = () => {
     { id: 'user3', name: 'User 3' },
     { id: 'user4', name: 'User 4' },
     { id: 'user5', name: 'User 5' },
+    { id: 'user6', name: 'User 1' },
+    { id: 'user7', name: 'User 2' },
+    { id: 'user8', name: 'User 3' },
+    { id: 'user9', name: 'User 4' },
+    { id: 'user91', name: 'User 5' },
     // Add more users as needed
   ];
 
@@ -25,7 +30,7 @@ const ContactPage = () => {
   return (
     <div className="container">
       <div className="usersList">
-        <h2>Users List</h2>
+        <h2 className='text-xl font-semibold mb-2 -mt-1'>Users List</h2>
         {users.map(user => (
           <div
             key={user.id}
@@ -37,7 +42,7 @@ const ContactPage = () => {
         ))}
       </div>
       <div className="chatBox">
-        <h2>Chat</h2>
+        <h2 className='text-xl font-semibold -mt-1'>Chat</h2>
         {users.map(user => (
           <div
             key={user.id}
