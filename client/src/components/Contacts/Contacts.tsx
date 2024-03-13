@@ -5,6 +5,7 @@
 import { useState } from 'react';
 import './contacts.css';
 import ContactChatInterface from './ContactChatInterface';
+import { FaEllipsisH, FaEllipsisV } from 'react-icons/fa';
 
 const ContactPage = () => {
   const [activeUser, setActiveUser] = useState<string | null>(null);
@@ -34,21 +35,32 @@ const ContactPage = () => {
         {users.map(user => (
           <div
             key={user.id}
-            className={`user ${activeUser === user.id ? 'active' : ''}`}
+            className={`user ${activeUser === user.id ? 'active' : ''} flex items-center gap-3`}
             onClick={() => handleUserClick(user.id)}
           >
-            {user.name}
+            <div>
+              <img src="/card1.svg" alt="img" className='w-10 h-10 rounded-full object-cover'/>
+            </div>
+            <div className="font-semibold">
+              {user.name}
+            </div>
+            <div className='flex-1 flex justify-end'><FaEllipsisV/></div>
           </div>
         ))}
       </div>
       <div className="chatBox">
-        <h2 className='text-xl font-semibold -mt-1'>Chat</h2>
-        {users.map(user => (
+        {!activeUser?<div className='flex justify-center items-center text-2xl mt-[10rem] font-semibold'>Please select a user to chat.</div>: users.map(user => (
           <div
             key={user.id}
             className="chat"
             style={{ display: activeUser === user.id ? 'block' : 'none' }}
           >
+            <div className="flex items-center gap-5 bg-white pb-2">
+              <img src="/card1.svg" alt="img" className='w-10 h-10 rounded-full object-cover'/>
+              <div className="font-semibold text-xl">
+                {user.name}
+              </div>
+            </div>
             <ContactChatInterface onClose={()=>{}}/>
           </div>
         ))}
