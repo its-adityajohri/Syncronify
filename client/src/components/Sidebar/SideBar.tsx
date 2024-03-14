@@ -1,7 +1,7 @@
 'use client'
 
 import Link from "next/link";
-import {FaHome, FaLock, FaMoneyBill, FaUser } from "react-icons/fa";
+import {FaCalendar, FaHome, FaLock, FaMoneyBill, FaUser } from "react-icons/fa";
 import { MdMessage } from "react-icons/md";
 import { BiAnalyse} from "react-icons/bi";
 import { BiCog } from "react-icons/bi";
@@ -11,17 +11,17 @@ import { useState } from "react";
 import "./Sidebar.css";
 const routes = [
   {
-    path: "/",
+    path: "/dashboard",
     name: "Dashboard",
     icon: <FaHome />,
   },
   {
-    path: "/users",
-    name: "Users",
-    icon: <FaUser />,
+    path: "/dashboard/event-page",
+    name: "Events",
+    icon: <FaCalendar />,
   },
   {
-    path: "/messages",
+    path: "/dashboard/contact-page",
     name: "Messages",
     icon: <MdMessage />,
   },
