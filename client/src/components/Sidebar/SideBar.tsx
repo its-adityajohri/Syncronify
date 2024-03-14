@@ -1,29 +1,27 @@
 'use client'
 
 import Link from "next/link";
-import { FaBars, FaHome, FaLock, FaMoneyBill, FaUser } from "react-icons/fa";
+import {FaCalendar, FaHome, FaLock, FaMoneyBill, FaUser } from "react-icons/fa";
 import { MdMessage } from "react-icons/md";
-import { BiAnalyse, BiSearch } from "react-icons/bi";
+import { BiAnalyse} from "react-icons/bi";
 import { BiCog } from "react-icons/bi";
 import { AiFillHeart, AiTwotoneFileExclamation } from "react-icons/ai";
 import { BsCartCheck } from "react-icons/bs";
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import SidebarMenu from "./SidebarMenu";
 import "./Sidebar.css";
 const routes = [
   {
-    path: "/",
+    path: "/dashboard",
     name: "Dashboard",
     icon: <FaHome />,
   },
   {
-    path: "/users",
-    name: "Users",
-    icon: <FaUser />,
+    path: "/dashboard/event-page",
+    name: "Events",
+    icon: <FaCalendar />,
   },
   {
-    path: "/messages",
+    path: "/dashboard/contact-page",
     name: "Messages",
     icon: <MdMessage />,
   },
@@ -36,23 +34,23 @@ const routes = [
     path: "/file-manager",
     name: "File Manager",
     icon: <AiTwotoneFileExclamation />,
-    subRoutes: [
-      {
-        path: "/settings/profile",
-        name: "Profile ",
-        icon: <FaUser />,
-      },
-      {
-        path: "/settings/2fa",
-        name: "2FA",
-        icon: <FaLock />,
-      },
-      {
-        path: "/settings/billing",
-        name: "Billing",
-        icon: <FaMoneyBill />,
-      },
-    ],
+    // subRoutes: [
+    //   {
+    //     path: "/settings/profile",
+    //     name: "Profile ",
+    //     icon: <FaUser />,
+    //   },
+    //   {
+    //     path: "/settings/2fa",
+    //     name: "2FA",
+    //     icon: <FaLock />,
+    //   },
+    //   {
+    //     path: "/settings/billing",
+    //     name: "Billing",
+    //     icon: <FaMoneyBill />,
+    //   },
+    // ],
   },
   {
     path: "/order",
@@ -89,11 +87,15 @@ const routes = [
   },
 ];
 
-import { ReactNode } from 'react';
 
 const SideBar = () => {
+
+    
+  const handleSidebar=(arg: boolean | ((prevState: boolean) => boolean))=>{
+  setIsOpen(arg);
+  }
+  
   const [isOpen, setIsOpen] = useState(false);
-  const toggle = () => setIsOpen(!isOpen);
   const inputAnimation = {
     hidden: {
       width: 0,
@@ -129,108 +131,40 @@ const SideBar = () => {
   };
 
   return (
-    <>
-      <div className="main-container">
-        <motion.div
-          animate={{
-            width: isOpen ? "200px" : "60px",
-
-            transition: {
-              duration: 0.5,
-              type: "spring",
-              damping: 10,
-            },
-          }}
-          className={`sidebar `}
-        >
-          <div className="top_section">
-            <AnimatePresence>
-              {isOpen && (
-                <motion.h1
-                  variants={showAnimation}
-                  initial="hidden"
-                  animate="show"
-                  exit="hidden"
-                  className="logo"
-                >
-                  DoSomeCoding
-                </motion.h1>
-              )}
-            </AnimatePresence>
-
-            <div className="bars">
-              <FaBars onClick={toggle} />
+    <div className="relative min-w-10 pt-2 text-white bg-[#0f172a] min-h-[100vh]">
+    <div className={`transition-all duration-500 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} absolute left-0 z-10 top-0 bottom-0 w-72 bg-[#0f172a]`} onMouseLeave={()=>handleSidebar(false)}>
+      <div className="p-2 text-white font-semibold">
+        <div className="flex justify-between items-center m-5">
+          <Link href='/'>Sincronify</Link>
+          {/* <span className="px-3 font-bold py-1 rounded-lg bg-black">X</span> */}
+        </div>
+        <hr color="black"/>
+        <div className="flex flex-col items-center">
+          {routes.map((route, i)=>(
+            <div className="w-full m-2" key={i}>
+              <Link href={route.path} className="w-[100%] flex justify-between items-center hover:bg-gray-900">
+                <span className="">{route.name}</span>
+                <span className="px-8 py-4">{route.icon}</span>
+              </Link>
+              <hr />
             </div>
-          </div>
-          <div className="search">
-            <div className="search_icon">
-              <BiSearch />
-            </div>
-            <AnimatePresence>
-              {isOpen && (
-                <motion.input
-                  initial="hidden"
-                  animate="show"
-                  exit="hidden"
-                  variants={inputAnimation}
-                  type="text"
-                  placeholder="Search"
-                />
-              )}
-            </AnimatePresence>
-          </div>
-          <section className="routes">
-            {routes.map((route, index) => {
-              if (route.subRoutes) {
-                return (
-                  <SidebarMenu
-                    setIsOpen={setIsOpen}
-                    route={route}
-                    showAnimation={showAnimation}
-                    isOpen={isOpen}
-                  />
-                );
-              }
-
-              return (
-                <Link
-                  href={route.path}
-                  key={index}
-                  className="link"
-                >
-                  <div className="icon">{route.icon}</div>
-                  <AnimatePresence>
-                    {isOpen && (
-                      <motion.div
-                        variants={showAnimation}
-                        initial="hidden"
-                        animate="show"
-                        exit="hidden"
-                        className="link_text"
-                      >
-                        {route.name}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </Link>
-              );
-            })}
-          </section>
-        </motion.div>
+          ))}
+        </div>
       </div>
-    </>
+    </div>
+    <div className="" onMouseEnter={()=>handleSidebar(true)}>  
+      <div className="rounded-full w-10 h-10 text-center bg-black p-2 mb-8 mx-auto">SF</div>
+      <div className="flex flex-col text-xl items-center">
+        {routes.map((route)=>(
+          <Link href={route.path} className="w-[100%] flex justify-center hover:bg-gray-900">
+            <span className="px-8 py-4">{route.icon}</span>
+          </Link>
+        ))}
+      </div>
+    </div>
+    </div>
   );
 };
 
+
 export default SideBar;
-
-
-// import React from 'react'
-
-// const SideBar = () => {
-//   return (
-//     <div className='min-w-fit  p-5 bg-gray-700 text-white min-h-[100vh]'>SideBar</div>
-//   )
-// }
-
-// export default SideBar
