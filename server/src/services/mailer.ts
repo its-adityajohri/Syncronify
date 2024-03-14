@@ -29,10 +29,12 @@ const sendSGMail = async ({
   }
 };
 
-exports.sendEmail = async (args) => {
+const sendEmail = async (args) => {
   if (!(process.env.NODE_ENV === "development")) {
     return Promise.resolve();
   } else {
     return sendSGMail(args);
   }
 };
+
+export default sendEmail;

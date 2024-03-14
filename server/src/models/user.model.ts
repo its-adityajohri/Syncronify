@@ -1,8 +1,8 @@
-import mongoose, { Document, Model } from 'mongoose';
+import mongoose, { Document, Model, Types } from 'mongoose';
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 
-interface IUser extends Document {
+interface IUserDocument extends Document {
   firstName: string;
   lastName: string;
   about?: string;
@@ -19,9 +19,28 @@ interface IUser extends Document {
   otp_expiry_time?: Date;
   socket_id?: string;
   status: 'Online' | 'Offline';
+
+  // Method declarations
+  correctPassword(candidatePassword: string, userPassword: string): Promise<boolean>;
+  correctOTP(candidateOTP: string, userOTP: string): Promise<boolean>;
+  changedPasswordAfter(JWTTimeStamp: number): boolean;
+  createPasswordResetToken(): string;
 }
 
-interface UserModelInterface extends Model<IUser> {};
+interface IGeneralUserDocument extends IUserDocument {}
+interface IAdminUserDocument extends IUserDocument {
+  isCommunityAdmin: boolean;
+  communityName: string;
+  organizationName: string;
+  postedEvents: Types.ObjectId[];
+}
+interface IApplicationAdminUserDocument extends IUserDocument {}
+
+
+interface IUserModel extends Model<IUserDocument> {};
+interface IGeneralUserModel extends Model<IGeneralUserDocument> {}
+interface IAdminUserModel extends Model<IAdminUserDocument> {}
+interface IApplicationAdminUserModel extends Model<IApplicationAdminUserDocument> {}
 
 const userSchema = new mongoose.Schema({
   firstName: {
@@ -161,8 +180,32 @@ userSchema.methods.createPasswordResetToken = function () {
   return resetToken;
 };
 
-export const User: UserModelInterface = mongoose.model<IUser>('User', userSchema);
-module.exports = User;
+const User: IUserModel = mongoose.model<IUserDocument>('User', userSchema);
+
+const genUserSchema = new mongoose.Schema({});
+genUserSchema.methods.changedPasswordAfter = function (JWTTimeStamp: any) {
+  if (this.passwordChangedAt) {
+    const changedTimeStamp = Math.floor(this.passwordChangedAt.getTime() / 1000);
+    return JWTTimeStamp < changedTimeStamp;
+  }
+
+  // FALSE MEANS NOT CHANGED
+  return false;
+};
+
+const GeneralUser : IGeneralUserModel = User.discriminator<IGeneralUserDocument>('GeneralUser', genUserSchema);
+const AdminUser : IAdminUserModel = User.discriminator<IAdminUserDocument>('AdminUser', new mongoose.Schema({
+  isCommunityAdmin: { type: Boolean, required: true },
+  communityName: { type: String, required: true },
+  organizationName: { type: String, required: true },
+  postedEvents: [{ type: Types.ObjectId, ref: 'Event' }]
+}));
+const ApplicationAdminUser : IApplicationAdminUserModel = User.discriminator<IApplicationAdminUserDocument>('ApplicationAdminUser', new mongoose.Schema({
+
+}));
+
+export default User;
+export { GeneralUser, AdminUser, ApplicationAdminUser };
 
 
 // schema.pre('save', async function (next) {
