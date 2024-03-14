@@ -2,18 +2,31 @@
 import Calendar from '@/components/Calendar/Calendar'
 import LocalCarousel from '@/components/Carousel/Carousel';
 import Carousel from '@/components/Carousel/Carousel'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaLocationArrow, FaPlus } from 'react-icons/fa';
 import EventPage from '@/components/EventPage/EventPage';
+import BrowseMap from '@/components/MapBox/BrowseMap';
+import { preventDefault } from '@fullcalendar/common';
 
 const dashboard = () => {
 
   
   const [isCreateActive, setIsCreateActive] = useState(false);
   const[allEvents, setAllEvents]=useState([]);
+  const [isBrowseActive, setIsBrowseActive] = useState(false);
+  const [Location, setLocation] = useState({latitude: 0, longitude: 0});
+
+  useEffect(() => {
+    setIsBrowseActive(false);
+  }, [Location])
 
   const handleCreateActive=(toggleActive: boolean | ((prevState: boolean) => boolean))=>{
     setIsCreateActive(toggleActive);
+  }
+
+  const handleBrowseMap = (event: React.MouseEvent)=>{
+    event.preventDefault();
+    setIsBrowseActive(true);
   }
 
   return (
@@ -68,7 +81,7 @@ const dashboard = () => {
               <h1 className="">Location</h1>
               <div className="flex items-center gap-10">
                 <input type="" className=' flex-1 p-2 bg-transparent outline-none border-gray-500/70 border-2 rounded-lg' />
-                <button className="p-2 flex items-center gap-3 border-2 bg-#0f172a rounded-lg text-white text-center font-semibold"><p className="p-1">Pick from map</p><FaLocationArrow/></button>  
+                <button className="p-2 flex items-center gap-3 border-2 bg-[#0f172a] rounded-lg text-white text-center font-semibold" onClick={handleBrowseMap}><p className="p-1">Pick from map</p><FaLocationArrow/></button>  
               </div>
               <h1 className="">Description</h1>
               <input type="text" className='p-2 bg-transparent outline-none border-gray-500/70 border-2 rounded-lg' />
@@ -79,6 +92,12 @@ const dashboard = () => {
             </form>
           </div>
         </div>
+        }
+        
+        {isBrowseActive &&
+          <div className="absolute w-[94vw] left-[3vw] right-[3vw] h-[94vh] top-[3vh] bottom-[3vh] z-20">
+              <BrowseMap setLocation = {setLocation}/>
+          </div>
         }
         
       </div>

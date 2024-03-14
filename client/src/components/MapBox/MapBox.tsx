@@ -3,9 +3,10 @@
 import "./MapBox.css";
 import ReactMapGl, { Marker, FullscreenControl, GeolocateControl, NavigationControl, Source, Layer } from "react-map-gl";
 import { useState, useEffect, useRef, SetStateAction } from "react";
-import PointerIcon from "./pointer.svg";
+// import PointerIcon from "/pointer.svg";
 import getPath from "./API/getPath";
 import getPlaces from './API/getPlaces';
+import 'mapbox-gl/dist/mapbox-gl.css'
 
 const TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
 
@@ -209,7 +210,7 @@ function MapboxComponent({ longitude = 80.2329, latitude = 26.512339 }) {
             draggable={true}
             onDragEnd={handleMarkerDrag}
             >
-            <img className="marker" src={PointerIcon} />
+            <img className="marker" src="/pointer.svg" />
             </Marker>
             {track &&  <Source
                 id="routeSource"
