@@ -34,23 +34,23 @@ const routes = [
     path: "/file-manager",
     name: "File Manager",
     icon: <AiTwotoneFileExclamation />,
-    subRoutes: [
-      {
-        path: "/settings/profile",
-        name: "Profile ",
-        icon: <FaUser />,
-      },
-      {
-        path: "/settings/2fa",
-        name: "2FA",
-        icon: <FaLock />,
-      },
-      {
-        path: "/settings/billing",
-        name: "Billing",
-        icon: <FaMoneyBill />,
-      },
-    ],
+    // subRoutes: [
+    //   {
+    //     path: "/settings/profile",
+    //     name: "Profile ",
+    //     icon: <FaUser />,
+    //   },
+    //   {
+    //     path: "/settings/2fa",
+    //     name: "2FA",
+    //     icon: <FaLock />,
+    //   },
+    //   {
+    //     path: "/settings/billing",
+    //     name: "Billing",
+    //     icon: <FaMoneyBill />,
+    //   },
+    // ],
   },
   {
     path: "/order",
@@ -92,7 +92,6 @@ const SideBar = () => {
 
     
   const handleSidebar=(arg: boolean | ((prevState: boolean) => boolean))=>{
-    console.log(arg);
   setIsOpen(arg);
   }
   
@@ -141,8 +140,8 @@ const SideBar = () => {
         </div>
         <hr color="black"/>
         <div className="flex flex-col items-center">
-          {routes.map((route)=>(
-            <div className="w-full m-2">
+          {routes.map((route, i)=>(
+            <div className="w-full m-2" key={i}>
               <Link href={route.path} className="w-[100%] flex justify-between items-center hover:bg-gray-900">
                 <span className="">{route.name}</span>
                 <span className="px-8 py-4">{route.icon}</span>

@@ -5,8 +5,12 @@ import Link from 'next/link'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/navigation';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { login } from '@/lib/features/authentication/authSlice';
 
 function Login({handleClick}) {
+    const dispatch = useAppDispatch();
+    const authenticatedUser = useAppSelector((state: any)=>state.auth.user);
 
     const router=useRouter();
 
@@ -33,9 +37,11 @@ function Login({handleClick}) {
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         notify();
+        dispatch(login({username, password}));
         setTimeout(() => {
             router.push('/dashboard');
         }, 5000);
+        console.log(authenticatedUser.password);
     }
 
     return (
