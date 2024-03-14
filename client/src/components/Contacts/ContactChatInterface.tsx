@@ -1,12 +1,11 @@
 "use client"
+import './contacts.css';
 import React, { useState } from 'react';
-import './chatStyles.css'
-
-interface ChatInterfaceProps {
+interface ContactChatInterfaceProps {
   onClose: () => void;
 }
 
-const ChatInterface: React.FC<ChatInterfaceProps> = ({ onClose }) => {
+const ContactChatInterface: React.FC<ContactChatInterfaceProps> = ({ onClose }) => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<string[]>([]);
 
@@ -23,28 +22,28 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onClose }) => {
   };
 
   return (
-    <div className="chat-interface">
-      <div className="header">
-        <h2>Chat Interface</h2>
-        <button onClick={onClose} className="close-button">
+    <div className="interface">
+      <div className="">
+        {/* <h2>Chat Interface</h2> */}
+        {/* <button onClick={onClose} className="close-button">
           Close
-        </button>
+        </button> */}
       </div>
-      <div className="chat-messages flex justify-end items-end gap-1">
+      <div className="chatMessages flex justify-end items-end gap-1">
         {messages.map((msg, index) => (
-          <div key={index} className="message rounded-[5px] bg-gray-300/70">
+          <div key={index} className="contactMessage rounded-[5px] bg-gray-300/70">
             {msg}
           </div>
         ))}
       </div>
-      <form onSubmit={handleSendClick} className="input-area">
+      <form onSubmit={handleSendClick} className="inputArea">
         <input
           type="text"
           placeholder="Type your message..."
           value={message}
           onChange={handleInputChange}
         />
-        <button className="send-button">
+        <button className="sendButton">
           Send
         </button>
       </form>
@@ -52,4 +51,4 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onClose }) => {
   );
 };
 
-export default ChatInterface;
+export default ContactChatInterface;
