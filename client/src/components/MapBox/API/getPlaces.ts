@@ -8,7 +8,7 @@ export default async function getPlaces(query) {
         // `https://api.mapbox.com/search/searchbox/v1/forward?q=${query}`,
         {
             params: {
-            access_token: import.meta.env.VITE_MAP_TOKEN,
+            access_token: process.env.NEXT_PUBLIC_MAPBOX_TOKEN,
             session_token: 'bgnj',
             },
         }
