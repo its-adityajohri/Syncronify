@@ -19,7 +19,7 @@ const Card = ({event}) => {
                 <p className = "text-sm text-gray-600">{event.description}</p>
             </div>
             <div className="flex flex-row justify-center item-center p-2 w-full">
-                <button className ="text-white bg-sky-500 text-sm px-3 py-1 rounded-md hover:bg-purple-700">Explore</button>
+                <button className ="text-white bg-sky-500 text-sm px-3 py-1 rounded-md hover:bg-blue-700">Explore</button>
             </div>
         </div>
       </div>

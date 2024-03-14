@@ -1,8 +1,13 @@
+import EventDetailPage from '@/components/EventPage/EventDetailPage'
+import EventPage from '@/components/EventPage/EventPage'
 import React from 'react'
 
 const eventPage = () => {
   return (
-    <div>Page for an event's full information and Admin contact</div>
+    <div>
+      <EventPage/>
+      <EventDetailPage/>
+    </div>
   )
 }
 
