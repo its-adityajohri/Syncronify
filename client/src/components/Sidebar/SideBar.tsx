@@ -136,8 +136,8 @@ const SideBar = () => {
     <div className={`transition-all duration-500 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} absolute left-0 z-10 top-0 bottom-0 w-72 bg-[#0f172a]`} onMouseLeave={()=>handleSidebar(false)}>
       <div className="p-2 text-white font-semibold">
         <div className="flex justify-between items-center m-5">
-          <span>Sincronify</span>
-          <span className="px-3 font-bold py-1 rounded-lg bg-black">X</span>
+          <Link href='/'>Sincronify</Link>
+          {/* <span className="px-3 font-bold py-1 rounded-lg bg-black">X</span> */}
         </div>
         <hr color="black"/>
         <div className="flex flex-col items-center">

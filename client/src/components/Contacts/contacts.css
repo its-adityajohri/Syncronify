@@ -16,7 +16,7 @@
     cursor: pointer;
   }
   .contactMessage{
-
+    overflow-wrap: break-word;
     max-width: 350px;
     padding: 2px 5px;
   }
@@ -70,7 +70,7 @@
     border-radius: 5px;
   }
   .chatMessages {
-    height: 20.2rem;
+    height: 30rem;
     overflow-y: scroll;
     padding: 10px;
     display:flex;
