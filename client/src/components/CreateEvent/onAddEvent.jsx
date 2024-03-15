@@ -1,6 +1,9 @@
 import React, { useState} from 'react';
 import EventForm from './EventForm';
 
+
+const [isCreateActive, setIsCreateActive] = useState(false);
+
 const App = () => {
   const [events, setEvents] = useState([]);
 
