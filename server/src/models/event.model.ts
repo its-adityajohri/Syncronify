@@ -1,24 +1,41 @@
 import mongoose, { Document, Model, Types } from 'mongoose';
 // const geocoder = require('./utils/geocoder'); // You would need to implement or include a geocoder utility
 
-interface IEvent extends Document {
+interface IEventDocument extends Document {
     title: string;
     description: string;
     imgLink?: string; // Optional as it's not marked required in the schema
-    venue: {
-      latitude: number;
-      longitude: number;
-    };
-    eventType: 'personal' | 'posted';
-    organizingBody?: string; // Optional as it's specific to 'posted' events and not marked required
-    admin: Types.ObjectId; // Assuming this refers to a User document
-    contact?: string; // Optional as it's not marked required
-    attendees: Types.ObjectId[]; // Array of User document references
-    capacity?: number; // Optional as it's not marked required
+    location?: Types.ObjectId;
+    eventType: 'personal' | 'posted';  // Array of User document references
+     // Optional as it's not marked required
+    eventDate: Date; // Required field
+    eventTiming?: { from: string; to: string }; 
     createdAt?: Date; // Optional as it has a default value
+
+    // Declare the instance methods here
+    isFull(): boolean;
+    addAttendee(userId: Types.ObjectId): Promise<void>;
 }
 
-interface EventModelInterface extends Model<IEvent> {}
+interface IPersonalEventDocument extends IEventDocument {
+  // Personal event-specific fields if any
+}
+
+interface IPostedEventDocument extends IEventDocument {
+  extraInfo: string; // Example of a field specific to posted events
+  capacity?: number;
+  communityName: string;
+  organizationName: string; // Optional as it's specific to 'posted' events and not marked required
+  admin: Types.ObjectId;
+  contact?: string; 
+  attendees: Types.ObjectId[];
+}
+
+
+interface EventModel extends Model<IEventDocument> {}
+interface PersonalEventModel extends Model<IPersonalEventDocument> {}
+interface PostedEventModel extends Model<IPostedEventDocument> {}
+
 
 
 const eventSchema = new mongoose.Schema({
@@ -33,40 +50,62 @@ const eventSchema = new mongoose.Schema({
   imgLink: {
     type: String, // Assuming images are stored and managed through Cloudinary
   },
-  venue: {
-    latitude: {
-      type: Number,
-      required: [true, 'Latitude is required'],
-    },
-    longitude: {
-      type: Number,
-      required: [true, 'Longitude is required'],
-    }
-  },
+  location: { type: Types.ObjectId, ref: 'Location' },
   eventType: {
     type: String,
     enum: ['personal', 'posted'],
     required: true,
   },
-  organizingBody: String, // Specific to 'posted' events
-  admin: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'User', // Assuming you have a User model
-  },
-  contact: String, // Contact information for posted events
-  attendees: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: 'User',
-    },
-  ],
-  capacity: Number, // An innovative feature could be to limit the number of attendees
+  eventDate: { type: Date, required: true }, // Add event date
+  eventTiming: { // Add event timing with from and to times
+    from: String,
+    to: String,
+  }, // An innovative feature could be to limit the number of attendees
   createdAt: {
     type: Date,
     default: Date.now(),
   },
 });
 
+const personalEventSchema = new mongoose.Schema({
+  // PersonalEvent specific fields here
+  // For example, there might not be any additional fields for personal events
+});
+
+const postedEventSchema = new mongoose.Schema({
+  // PostedEvent specific fields here
+  extraInfo: {
+    type: String,
+    required: [true, 'Extra information is required for posted events'],
+  },
+  communityName: {
+    type: String,
+    required: [true, 'Community name is required for posted events'],
+  },
+  organizationName: {
+    type: String,
+    required: [true, 'Organization name is required for posted events'],
+  },
+  contact: {
+    type: String,
+    required: [true, 'Contact information is required for posted events'],
+  },
+  attendees: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User',
+    },
+  ],
+  capacity: {
+    type: Number,
+    required: [true, 'Capacity is required for posted events'],
+  },
+  admin: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+    required: [true, 'Admin is required for posted events'],
+  },
+});
 
 
 // Instance method to check if the event capacity has been reached
@@ -84,10 +123,15 @@ eventSchema.methods.addAttendee = async function(userId: number) {
     await this.save();
 };
 
-const Event: EventModelInterface = mongoose.model<IEvent>('Event', eventSchema);
+const Event: EventModel = mongoose.model<IEventDocument>('Event', eventSchema);
 
-module.exports = Event;
+// Create discriminators
+const PersonalEvent : PersonalEventModel = Event.discriminator<IPersonalEventDocument>('PersonalEvent', personalEventSchema);
+const PostedEvent : PostedEventModel = Event.discriminator<IPostedEventDocument>('PostedEvent', postedEventSchema);
 
+
+export default Event;
+export { PersonalEvent, PostedEvent };
 // Geocode & create location field
 // eventSchema.pre('save', async function(next) {
 //   if (this.isModified('venue') || this.isNew) {

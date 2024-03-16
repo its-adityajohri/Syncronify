@@ -8,7 +8,7 @@ import EventPage from '@/components/EventPage/EventPage';
 import BrowseMap from '@/components/MapBox/BrowseMap';
 import { preventDefault } from '@fullcalendar/common';
 
-const dashboard = () => {
+const eventControls = () => {
 
   
   const [isCreateActive, setIsCreateActive] = useState(false);
@@ -32,7 +32,7 @@ const dashboard = () => {
   return (
     <div className='m-5'>
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-semibold">Your Upcoming Events.</h1>
+        <h1 className="text-3xl font-semibold">Upcoming Events</h1>
         <button className='flex gap-2 items-center border-2 border-black rounded-lg p-2 font-semibold' onClick={()=>handleCreateActive(true)}>Create Event <FaPlus /></button>
 
         {isCreateActive && 
@@ -109,4 +109,4 @@ const dashboard = () => {
   )
 }
 
-export default dashboard
+export default eventControls
