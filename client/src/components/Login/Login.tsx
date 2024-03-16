@@ -14,14 +14,30 @@ function Login({handleClick}) {
 
     const router=useRouter();
 
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [selectedRole, setSelectedRole]=useState('');
+    // const [username, setUsername] = useState('');
+    // const [userType, setUserType] = useState('');
+    // const [password, setPassword] = useState('');
+    // const [selectedRole, setSelectedRole]=useState('');
 
-    const handleRoleChange=(e)=>{
-        e.preventDefault();
-        setSelectedRole(e.target.value);
+    const[user, setUser]=useState({
+        username: '',
+        password: '',
+        role: ''
+    });
+
+    const handleChange=(e)=>{
+        // e.preventDefault();
+        setUser({
+            ...user,
+            [e.target.id]: e.target.value,
+        })
+        console.log(e.target.id);
     }
+
+    // const handleRoleChange=(e)=>{
+    //     e.preventDefault();
+    //     setSelectedRole(e.target.value);
+    // }
 
     const notify = () => {
         return toast.success("Login successfully", {
@@ -36,10 +52,24 @@ function Login({handleClick}) {
 
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
+        const {username, password, role}=user;
         notify();
-        dispatch(login({username, password}));
+        dispatch(login({username, password, role}));
         setTimeout(() => {
-            router.push('/dashboard');
+            switch (user.role) {
+                case 'user':
+                    router.push('/dashboard');
+                    break;
+                case 'admin':
+                    router.push('/admin-dashboard')
+                    break;
+                case 'application admin':
+                    router.push( '/application-admin-dashboard' );
+                    break;
+                default:
+                    alert( `Unknown user type ${user.role}` )
+                    break;
+            }
         }, 5000);
         console.log(authenticatedUser.password);
     }
@@ -73,8 +103,8 @@ function Login({handleClick}) {
                             <input
                                 type='text' 
                                 id='username'
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
+                                value={user.username}
+                                onChange={handleChange}
                                 className={`px-3 py-2 rounded-lg outline-none duration-200 border text-[#1B1B1B] bg-slate-50 border-gray-200 w-full focus:text-gray-50 focus:bg-black`}
                                 placeholder='Username' />
                         </div>
@@ -87,19 +117,19 @@ function Login({handleClick}) {
                             <input
                                 type='password'
                                 id='password'
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                value={user.password}
+                                onChange={handleChange}
                                 className={`px-3 py-2 rounded-lg outline-none duration-200 border text-[#1B1B1B] bg-slate-50 border-gray-200 w-full focus:text-gray-50 focus:bg-black`}
                                 placeholder='Password' />
                         </div>
 
                         <div className='space-y-2'>
                             <label htmlFor="role" className='inline-block mt-2 pl-1 text-bf'>Select Role:</label>
-                            <select id="role" value={selectedRole} onChange={handleRoleChange} className='px-3 py-2 rounded-lg outline-none duration-200 border text-[#1B1B1B] bg-slate-50 border-gray-200 w-full focus:text-gray-50 focus:bg-black'>
+                            <select id="role" value={user.role} onChange={handleChange} className='px-3 py-2 rounded-lg outline-none duration-200 border text-[#1B1B1B] bg-slate-50 border-gray-200 w-full focus:text-gray-50 focus:bg-black'>
                                 <option value="">Select a role</option>
-                                <option value="admin">User</option>
-                                <option value="user">Admin</option>
-                                <option value="guest">Application Admin</option>
+                                <option value="user">User</option>
+                                <option value="admin">Admin</option>
+                                <option value="application admin">Application Admin</option>
                                 {/* Add more options as needed */}
                             </select>
                             {/* Display selected role */}
