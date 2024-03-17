@@ -70,8 +70,8 @@ const SideBar = ({routes}: {routes: Route[]}) => {
         </div>
         <hr color="black"/>
         <div className="flex flex-col items-center">
-          {routes.map((route,i, i)=>(
-            <div className="w-full m-2" key={i} key={i}>
+          {routes.map((route,i)=>(
+            <div className="w-full m-2" key={i}>
               <Link href={route.path} className="w-[100%] flex justify-between items-center hover:bg-gray-900">
                 <span className="">{route.name}</span>
                 <span className="px-8 py-4">{route.icon}</span>
