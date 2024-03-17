@@ -7,10 +7,10 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import Image from "next/image";
+// import Image from "next/image";
 import { Button } from "../ui/button";
-import { useRouter } from "next/navigation";
 import { FaSearch } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 interface eventData {
   id: number;
@@ -113,10 +113,6 @@ const EventPage: React.FC = () => {
 
   const router = useRouter();
 
-  const handleEventPush = (eventId)=>{
-    router.push(`/dashboard/event-page/${eventId}`);
-  }
-
   const searchEvents = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setSearchTerm(event.target.value.toLowerCase());
   };
@@ -163,7 +159,7 @@ const EventPage: React.FC = () => {
               </CardContent>
             </div>
             <CardFooter>
-              <Button onClick={()=>handleEventPush(eventDetail.id)}>
+              <Button onClick={() => router.push(`/dashboard/event-page/${eventDetail.id}`)}>
                 Explore
                 </Button>
             </CardFooter>
