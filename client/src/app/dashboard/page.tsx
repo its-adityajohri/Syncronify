@@ -9,7 +9,6 @@ import BrowseMap from '@/components/MapBox/BrowseMap';
 import { preventDefault } from '@fullcalendar/common';
 
 const dashboard = () => {
-
   
   const [isCreateActive, setIsCreateActive] = useState(false);
   const[allEvents, setAllEvents]=useState([]);
