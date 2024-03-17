@@ -1,19 +1,13 @@
 import React, { useState } from 'react';
 import { FaLocationArrow, FaPlus } from 'react-icons/fa';
+
 const CreateEvent = () => {
   return (  
     <div>CreateEvent</div>
   )
 }
-// Define the type for the props of the EventForm component
-interface EventFormProps {
-onAddEvent: (event: EventData) => void; // Define the type of onAddEvent function
- }
  
-const [isCreateActive, setIsCreateActive] = useState(false);
-const handleCreateActive = (toggleActive: boolean | ((prevState: boolean) => boolean)) => {
-  setIsCreateActive(toggleActive);
-}
+//const [isCreateActive, setIsCreateActive] = useState();
 
 interface EventData {
     eventName: string;
@@ -36,6 +30,12 @@ interface EventData {
     const [audience, setAudience] = useState('');
     const [description, setDescription] = useState('');
     const [image, setImage] = useState<File | null>(null);
+    const [isCreateActive, setIsCreateActive] = useState(false);
+
+
+  const handleCreateActive = (toggleActive: boolean | ((prevState: boolean) => boolean)) => {
+    setIsCreateActive(toggleActive);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,12 +56,13 @@ interface EventData {
     setAudience('');
     setDescription('');
     setImage(null);
+    setIsCreateActive(false);
   };
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <button type="submit">Create</button>
+        <button type="submit" onClick={() => setIsCreateActive(true)}>Create</button>
       </form>
       {isCreateActive && (
         <div className={`fixed w-full -top-5 left-0 z-10 bg-gray-300/70`}>
