@@ -17,6 +17,7 @@ const Calendar = () => {
   }
 
   return (
+    <div className="p-10 m-auto w-[90%]">
     <div className="p-2 border-2 border-gray-500/70 rounded-lg w-[1000px]">
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -39,6 +40,7 @@ const Calendar = () => {
         editable
         selectable
       />
+    </div>
     </div>
   )
 }

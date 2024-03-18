@@ -61,7 +61,7 @@ const SideBar = ({routes}: {routes: Route[]}) => {
   };
 
   return (
-    <div className="relative min-w-10 pt-2 text-white bg-[#0f172a] min-h-[100vh]">
+    <div className="z-[100000] relative min-w-10 pt-2 text-white bg-[#0f172a] min-h-[100vh]">
     <div className={`transition-all duration-500 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} absolute left-0 z-10 top-0 bottom-0 w-72 bg-[#0f172a]`} onMouseLeave={()=>handleSidebar(false)}>
       <div className="p-2 text-white font-semibold">
         <div className="flex justify-between items-center m-5">

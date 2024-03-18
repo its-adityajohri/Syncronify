@@ -101,8 +101,10 @@ const dashboard = () => {
         
       </div>
       <LocalCarousel/>
+      <Calendar/>
       {allEvents.length <0? <p className='p-5 '>You don't have any upcoming events.</p>:
-      <div></div>
+      <div>
+      </div>
    }
     </div>
   )

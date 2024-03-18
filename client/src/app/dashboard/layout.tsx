@@ -3,7 +3,7 @@ import Navbar from '../../components/Navbar/Navbar';
 import SideBar from '../../components/Sidebar/SideBar';
 import { FaCalendar, FaHome, FaLock, FaMoneyBill, FaUser } from 'react-icons/fa';
 import { MdMessage } from 'react-icons/md';
-import { BiAnalyse, BiCog } from 'react-icons/bi';
+import { BiAnalyse, BiCog, BiGroup, BiMap, BiNote } from 'react-icons/bi';
 import { AiFillHeart, AiTwotoneFileExclamation } from 'react-icons/ai';
 import { BsCartCheck } from 'react-icons/bs';
 
@@ -28,65 +28,25 @@ const routes = [
     icon: <MdMessage />,
   },
   {
-    path: "/analytics",
-    name: "Analytics",
-    icon: <BiAnalyse />,
+    path: "/dashboard/navigation",
+    name: "Navigation",
+    icon: <BiMap />,
   },
   {
-    path: "/file-manager",
-    name: "File Manager",
-    icon: <AiTwotoneFileExclamation />,
-    subRoutes: [
-      {
-        path: "/settings/profile",
-        name: "Profile ",
-        icon: <FaUser />,
-      },
-      {
-        path: "/settings/2fa",
-        name: "2FA",
-        icon: <FaLock />,
-      },
-      {
-        path: "/settings/billing",
-        name: "Billing",
-        icon: <FaMoneyBill />,
-      },
-    ],
+    path: "/dashboard/your-groups",
+    name: "Groups",
+    icon: <BiGroup />,
   },
   {
-    path: "/order",
-    name: "Order",
-    icon: <BsCartCheck />,
+    path: "/dashboard/your-notes",
+    name: "Notes",
+    icon: <BiNote />,
   },
   {
-    path: "/settings",
-    name: "Settings",
-    icon: <BiCog />,
-    exact: true,
-    subRoutes: [
-      {
-        path: "/settings/profile",
-        name: "Profile ",
-        icon: <FaUser />,
-      },
-      {
-        path: "/settings/2fa",
-        name: "2FA",
-        icon: <FaLock />,
-      },
-      {
-        path: "/settings/billing",
-        name: "Billing",
-        icon: <FaMoneyBill />,
-      },
-    ],
-  },
-  {
-    path: "/saved",
-    name: "Saved",
-    icon: <AiFillHeart />,
-  },
+    path: "/dashboard/user-profile",
+    name: "Edit Profils",
+    icon: <FaUser />,
+  }
 ];
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
