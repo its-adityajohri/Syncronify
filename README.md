@@ -1,5 +1,4 @@
 # Syncronify - Event Managment Software
-CS253 Course Project
 
 Syncronify is an Event Management Software designed to streamline event planning and enhance productivity for both individuals and teams. In the dynamic landscape of college and professional life, a plethora of online and offline events often overwhelm individuals, leading to time wastage, inefficient event attendance, unexpected conflicts, and missed deadlines. Managing events and team execution further compounds the challenges, requiring coordination through various mediums, resulting in redundancy and reduced efficiency.
 This software seeks to simplify the complexities associated with event management, scheduling, planning, and collaboration by consolidating all necessary functionalities into a unified interface. The goal is to eliminate the hassles mentioned earlier and provide users with a comprehensive solution.
