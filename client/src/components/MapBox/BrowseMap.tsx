@@ -6,10 +6,14 @@ import { useState } from "react";
 // import pointerIcon from "/pointer.svg";
 import getPlaces from './API/getPlaces';
 import 'mapbox-gl/dist/mapbox-gl.css'
+import { useLocationContext } from "@/context/LocationContext";
+// import {location, setLocation, handleLocation} from 
 
 const TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
 
-function BrowseMap({ setLocation }: { setLocation: (location: { latitude: number, longitude: number }) => void }) {
+function BrowseMap({handleBrowseMap}) {
+
+    const {location, setLocation, handleLocation} = useLocationContext();
     const [viewport, setViewport] = useState({
         latitude : 26.512339,
         longitude : 80.2329,
@@ -17,6 +21,7 @@ function BrowseMap({ setLocation }: { setLocation: (location: { latitude: number
     });
 
     const [marker, setMarker] = useState({
+        name:'',
         latitude : 26.512339,
         longitude : 80.2329,
     });
@@ -24,7 +29,7 @@ function BrowseMap({ setLocation }: { setLocation: (location: { latitude: number
     const handleMarkerDrag = (event) => {
         const latitude = event.lngLat.lat;
         const longitude = event.lngLat.lng;
-        setMarker({ latitude, longitude });
+        setMarker({name:'', latitude, longitude });
         setViewport((oldViewport) => ({
         ...oldViewport,
         latitude,
@@ -35,7 +40,7 @@ function BrowseMap({ setLocation }: { setLocation: (location: { latitude: number
     const handleClick = (event) => {
         const latitude = event.lngLat.lat;
         const longitude = event.lngLat.lng;
-        setMarker({ latitude, longitude });
+        setMarker({name:'', latitude, longitude });
         setViewport((oldViewport) => ({
             ...oldViewport,
             latitude,
@@ -62,7 +67,7 @@ function BrowseMap({ setLocation }: { setLocation: (location: { latitude: number
         const longitude = suggestion.center[0];
 
         setValue(streetAndNumber);
-        setMarker({latitude, longitude});
+        setMarker({name:suggestion?.place_name, latitude, longitude});
         setViewport((oldViewport) => ({
             ...oldViewport,
             latitude,
@@ -71,8 +76,14 @@ function BrowseMap({ setLocation }: { setLocation: (location: { latitude: number
         setSuggestions([]);
     };
 
-    const handleConfirmLocation = () => {
-        setLocation(marker);
+    const handleConfirmLocation = (event: any) => {
+        const {latitude, longitude}= marker;
+        const name=location? location.name:'';
+        setLocation({name, latitude, longitude})
+        console.log(marker);
+        // event.preventDefault();
+        handleBrowseMap(event);
+
     }
 
 

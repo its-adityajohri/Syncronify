@@ -27,8 +27,10 @@ interface event {
 }
 
 interface description {
-  date: string;
-  time: string;
+  dateFrom: string;
+  timeFrom: string;
+  dateTo: string;
+  timeTo: string;
   about: string;
   place: string;
 }
@@ -52,8 +54,10 @@ const EventPage: React.FC = () => {
         event_title: "Event 1",
       },
       description: {
-        date: "24/04/2024",
-        time: "6:00 PM",
+        dateFrom: "24/04/2024",
+        timeFrom: "6:00 PM",
+        dateTo: "24/04/2024",
+        timeTo: "7:00 PM",
         about:
           "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi dolorum ullam neque, rem odio tempore, placeat harum quisquam eos quibusdam deserunt dolores commodi libero magni id voluptas natus ex ipsum. Quasi, inventore cupiditate excepturi ex nostrum voluptatum aspernatur, esse obcaecati veritatis placeat soluta itaque culpa eos doloremque et beatae iusto!",
         place: "Hockey Ground IITK",
@@ -74,8 +78,10 @@ const EventPage: React.FC = () => {
         event_title: "Event 2",
       },
       description: {
-        date: "24/04/2024",
-        time: "6:00 PM",
+        dateFrom: "24/04/2024",
+        timeFrom: "6:00 PM",
+        dateTo: "24/04/2024",
+        timeTo: "7:00 PM",
         about:
           "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi dolorum ullam neque, rem odio tempore, placeat harum quisquam eos quibusdam deserunt dolores commodi libero magni id voluptas natus ex ipsum. Quasi, inventore cupiditate excepturi ex nostrum voluptatum aspernatur, esse obcaecati veritatis placeat soluta itaque culpa eos doloremque et beatae iusto!",
         place: "Hockey Ground IITK",
@@ -96,8 +102,10 @@ const EventPage: React.FC = () => {
         event_title: "Event 3",
       },
       description: {
-        date: "24/04/2024",
-        time: "6:00 PM",
+        dateFrom: "24/04/2024",
+        timeFrom: "6:00 PM",
+        dateTo: "24/04/2024",
+        timeTo: "7:00 PM",
         about:
           "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi dolorum ullam neque, rem odio tempore, placeat harum quisquam eos quibusdam deserunt dolores commodi libero magni id voluptas natus ex ipsum. Quasi, inventore cupiditate excepturi ex nostrum voluptatum aspernatur, esse obcaecati veritatis placeat soluta itaque culpa eos doloremque et beatae iusto!",
         place: "Hockey Ground IITK",
@@ -122,7 +130,7 @@ const EventPage: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-full bg-white text-black">
+    <div className="w-full h-full bg-white text-black max-w-screen-xl mx-auto">
       <h2 className="m-3 text-3xl font-semibold">Public Events</h2>
       <div className="text-center p-2">
         <input

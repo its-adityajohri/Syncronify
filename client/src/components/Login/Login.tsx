@@ -25,7 +25,7 @@ function Login({handleClick}) {
         role: ''
     });
 
-    const handleChange=(e)=>{
+    const handleChange=(e:any)=>{
         // e.preventDefault();
         setUser({
             ...user,
@@ -40,9 +40,9 @@ function Login({handleClick}) {
     // }
 
     const notify = () => {
-        return toast.success("Login successfully", {
+        return toast.success("Login successful", {
             position: "top-right",
-            autoClose: 5000,
+            autoClose: 4000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -54,23 +54,27 @@ function Login({handleClick}) {
         e.preventDefault();
         const {username, password, role}=user;
         notify();
+
+        try {
+            // fetch request to check if user does exist....
+        } catch (error) {
+            // 
+        }
         dispatch(login({username, password, role}));
-        setTimeout(() => {
-            switch (user.role) {
-                case 'user':
-                    router.push('/dashboard');
-                    break;
-                case 'admin':
-                    router.push('/admin-dashboard')
-                    break;
-                case 'application admin':
-                    router.push( '/application-admin-dashboard' );
-                    break;
-                default:
-                    alert( `Unknown user type ${user.role}` )
-                    break;
-            }
-        }, 5000);
+        switch (user.role) {
+            case 'user':
+                router.push('/dashboard');
+                break;
+            case 'admin':
+                router.push('/admin-dashboard')
+                break;
+            case 'application admin':
+                router.push( '/application-admin-dashboard' );
+                break;
+            default:
+                alert( `Unknown user type ${user.role}` )
+                break;
+        }
         console.log(authenticatedUser.password);
     }
 

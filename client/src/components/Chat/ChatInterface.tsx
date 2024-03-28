@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './chatStyles.css'
 
 interface ChatInterfaceProps {
@@ -9,6 +9,7 @@ interface ChatInterfaceProps {
 const ChatInterface: React.FC<ChatInterfaceProps> = ({ onClose }) => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<string[]>([]);
+  const[scrollToBottom, setScrollToBottom]=useState(false);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(event.target.value);
@@ -19,18 +20,29 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onClose }) => {
     if (message.trim() !== '') {
       setMessages([...messages, message]);
       setMessage('');
+      setScrollToBottom(true);
     }
   };
+
+  useEffect(()=>{
+    if(scrollToBottom){
+      const chatMessages=document.getElementById(("chat-messages"));
+      if(chatMessages){
+        chatMessages.scrollTop=chatMessages.scrollHeight;
+        setScrollToBottom(false);
+      }
+    }
+  },[messages, scrollToBottom]);
 
   return (
     <div className="chat-interface">
       <div className="header">
-        <h2>Chat Interface</h2>
+        <img src='/card1.svg' alt="Admin" className="admin-photo" />
         <button onClick={onClose} className="close-button">
-          Close
+          X
         </button>
       </div>
-      <div className="chat-messages flex justify-end items-end gap-1">
+      <div id='chat-messages' className="chat-messages flex-col gap-1 items-end">
         {messages.map((msg, index) => (
           <div key={index} className="message rounded-[5px] bg-gray-300/70">
             {msg}

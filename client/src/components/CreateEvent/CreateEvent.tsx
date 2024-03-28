@@ -1,68 +1,197 @@
 "use client";
+import {FaMapMarked, FaPlus } from 'react-icons/fa';
+import React, { ReactNode, useState } from 'react';
+import DatePicker, { registerLocale } from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { useLocationContext } from '@/context/LocationContext';
+import getPlaces from '../MapBox/API/getPlaces';
+import { Button } from '../ui/button';
+import { useDropzone } from 'react-dropzone';
 
-import React, { useState } from 'react';
-const CreateEvent = () => {
-  return (  
-    <div>CreateEvent</div>
-  )
+interface CreateEventProps {
+  isCreateActive: boolean;
+  handleCreateActive: React.Dispatch<React.SetStateAction<boolean>>;
+  handleBrowseMap: (event: any) => void;
 }
-// Define the type for the props of the EventForm component
-interface EventFormProps {
-onAddEvent: (event: EventData) => void; // Define the type of onAddEvent function
- }
 
- 
-interface EventData {
-  eventName: string;
-  startDate: string;
-  endDate: string;
-  audience: string;
-  description: string;
-  image: File | null;
-}
- 
-const EventForm: React.FC<EventFormProps> = ({ onAddEvent }) => {
-  const [eventName, setEventName] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [audience, setAudience] = useState('');
+const CreateEvent: React.FC<CreateEventProps> = ({
+  isCreateActive,
+  handleCreateActive,
+  handleBrowseMap,
+}) => {
+  const [title, setTitle] = useState('');
+  const [inputLocation, setInputLocation]=useState('');
+  const [suggestions, setSuggestions]=useState<{
+    place_name: string;
+    latitude: number;
+    longitude: number;
+    id: string;
+  }[]>([]);
   const [description, setDescription] = useState('');
-  const [image, setImage] = useState<File | null>(null);
+  const [fromDate, setFromDate] = useState(new Date());
+  const [toDate, setToDate] = useState(new Date());
+  const {location, setLocation, handleLocation}=useLocationContext();
+  const [imageUrl, setImageUrl]=useState<string>("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+
+  const handleInputLocation= async (event: React.ChangeEvent<HTMLInputElement>)=>{
+    const query=event.target.value;
+    location&&setLocation({...location, name:query})
+    setInputLocation(query);
+    console.log(location);
+
+    const response=await getPlaces(query);
+    setSuggestions(response);
+  }
+
+  const handleSelectedSuggestion=(suggestion:any)=>{
+    console.log(suggestion)
+    setInputLocation(suggestion.place_name)
+    setLocation({name: suggestion.place_name, latitude: suggestion.center[0], longitude: suggestion.center[1]})
+    setSuggestions([]);
+  }
+
+  // const onDrop=async(acceptedFiles: File[])=>{
+  //   const  imageFile= acceptedFiles[0];
+  //   setImageUrl(imageFile.name?URL.createObjectURL(imageFile):'')
+  // };
+
+
+  // const handleLocationChange=(latitude, longitude)=>{
+  //   const newLocation={
+  //     latitude: latitude,
+  //     longitude: longitude,
+  //   };
+  //   setLocation(newLocation);
+  // }
+
+  const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Create event object
-    const event = {
-      eventName,
-      startDate,
-      endDate,
-      audience,
-      description,
-      image,
-    };
-    // Pass the event object to the parent component
-    onAddEvent(event);
-    // Clear form fields
-    setEventName('');
-    setStartDate('');
-    setEndDate('');
-    setAudience('');
-    setDescription('');
-    setImage(null);
+    // Handle form submission
+    console.log('Form submitted:', title, description, fromDate, toDate, location);
+    handleCreateActive(false);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="text" placeholder="Event Name" value={eventName} onChange={(e) => setEventName(e.target.value)} required />
-      <input type="date" placeholder="Start Date" value={startDate} onChange={(e) => setStartDate(e.target.value)} required />
-      <input type="date" placeholder="End Date" value={endDate} onChange={(e) => setEndDate(e.target.value)} required />
-      <input type="text" placeholder="Audience" value={audience} onChange={(e) => setAudience(e.target.value)} required />
-      <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} required />
-      <input type="file" onChange={(e) => setImage(e.target.files && e.target.files[0])} required /> {/* File input for image */}
-      <button type="submit">Create</button>
-      <button type="reset">Remove</button>
-    </form>
+    <div
+      className={`fixed bottom-0 justify-center -top-5 left-20 right-0 z-20 bg-gray-300/70 ${
+        isCreateActive ? 'block' : 'hidden'
+      }`}
+    >
+      <div className="m-10 p-5 bg-white min-h-[90vh] rounded-xl text-black">
+        <div
+          className="absolute top-16 right-16 text-xl rotate-45 cursor-pointer"
+          onClick={() => handleCreateActive(false)}
+        >
+          <FaPlus />
+        </div>
+        <h1 className="text-3xl my-5 font-bold">Create Event</h1>
+        <form onSubmit={handleFormSubmit} className="flex flex-col gap-5">
+          <h1 className="">Title</h1>
+          <input
+            type="text"
+            placeholder='Event title here...'
+            className="p-2 bg-transparent outline-none border-gray-500/70 border-2 rounded-lg"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <h1 className="">Description</h1>
+          <input
+            type="text"
+            placeholder='Describe your event here...'
+            className="p-2 bg-transparent outline-none border-gray-500/70 border-2 rounded-lg"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+
+          <h1 className="">Event Image</h1>
+
+          {/* Temp Image link option */}
+          <input
+            type="text"
+            placeholder='place your image url here...'
+            className="p-2 bg-transparent outline-none border-gray-500/70 border-2 rounded-lg"
+            value={imageUrl}
+            onChange={(e) => setImageUrl(e.target.value)}
+          />
+
+          <h1 className="font-semibold">Duration</h1>
+          <div className="flex items-center gap-20">
+            <div className="flex items-center gap-10">
+              <h3 className="">From:</h3>
+              <DatePicker
+                className="bg-gray-300 flex border-2 border-gray-500/70 rounded-lg p-1 font-semibold cursor-pointer"
+                selected={fromDate}
+                onChange={(date) => setFromDate(date!)}
+                showTimeSelect
+                dateFormat="MMMM d, yyyy h:mm aa"
+                timeFormat="h:mm aa"
+                timeIntervals={15}
+                timeCaption="Time"
+                calendarClassName=""
+                required
+              />
+            </div>
+            <div className="flex items-center gap-10">
+              <h3 className="">To:</h3>
+              <DatePicker
+                className="bg-gray-300 flex border-2 border-gray-500/70 rounded-lg p-1 font-semibold cursor-pointer"
+                selected={toDate}
+                onChange={(date) => setToDate(date!)}
+                showTimeSelect
+                dateFormat="MMMM d, yyyy h:mm aa"
+                timeFormat="h:mm aa"
+                timeIntervals={15}
+                timeCaption="Time"
+                calendarClassName=""
+                required
+              />
+            </div>
+          </div>
+
+
+          <h1 className="">Location</h1>
+          <div className="relative flex items-center gap-20">
+          <input
+            type="text"
+            className="p-2 bg-transparent outline-none border-gray-500/70 border-2 block rounded-lg w-2/3"
+            placeholder="Search for location"
+            value={location?.name? location.name : inputLocation}
+            onChange={handleInputLocation}
+          />
+          {/* Display suggestions */}
+            <ul className="absolute bg-gray-200 rounded-xl backdrop-blur top-11 w-2/3 drop-shadow-xl max-h-[150px] overflow-y-scroll">
+              {suggestions.map(
+                (suggestion: any) =>
+                  inputLocation?.length > 0 && (
+                    <li
+                      key={suggestion.id}
+                      onClick={() =>handleSelectedSuggestion(suggestion)
+                      }
+                      className=" hover:bg-gray-500/50 cursor-pointer p-1 m-0 rounded-lg"
+                    >
+                      {suggestion.place_name}
+                    </li>
+                  )
+              )}
+
+              {/* If there are no suggestions, show 'Pick location from map'  */}
+              {!suggestions.length && inputLocation?.length > 0 && (
+                <li className="bg-gray-200 hover:bg-gray-500/50 cursor-pointer py-1">
+                  Pick location from map
+                </li>
+              )}
+            </ul>
+            <Button className='flex gap-2 items-center text-md' onClick={handleBrowseMap}>Choose from map <FaMapMarked/></Button>
+          </div>
+          <div className='flex gap-10'>
+            <Button className='font-semibold text-lg'>Create</Button>
+            <Button className='font-semibold text-lg'>Cancel</Button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 };
 
-export default EventForm;
+export default CreateEvent;

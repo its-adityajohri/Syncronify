@@ -86,8 +86,6 @@ const {eventId} = params;
 
   return (
     <div>
-      <h1>Event Detail Page</h1>
-      <p>Event ID: {eventId}</p>
       <EventDetailPage eventData={selectedEvent} />
       {/* Add event details */}
     </div>

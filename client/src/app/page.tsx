@@ -81,7 +81,7 @@ const LandingPage = () => {
       {/* {{{============Landing Intro Start======================}}} */}
       <section className="m-5 flex h-[500px]">
         <div className="landing_pic flex-1 h-10 w-10">
-          <img src="landing.png" alt="Landing pic" className='h-96 w-[400px] m-auto'/>
+          <img src="landing_pic.png" alt="Landing pic" className='h-96 w-[400px] m-auto'/>
         </div>
         <div className="discription flex-1 flex flex-col justify-center items-center m-auto gap-5">
           <h1 className="text-5xl font-bold ">Write, plan, share.</h1><h1 className="text-5xl font-bold ">With us at your side.</h1>
