@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import otpGenerator from "otp-generator";
 import sendEmail from "../services/mailer";
 import crypto from "crypto";
-
+import { Request, Response, NextFunction } from 'express';
 import filterObj from "../utils/filterObj";
 
 // Model
@@ -15,26 +15,67 @@ import catchAsync from "../utils/catchAsync";
 
 // this function will return you jwt token
 const JWT_SECRET = process.env.JWT_SECRET || 'default_secret';
-const signToken = (userId : number) => jwt.sign({ userId }, JWT_SECRET);
+const signToken = (userId: string | number, userType: string): string => {
+  if (!process.env.JWT_SECRET) throw new Error('JWT_SECRET is not defined');
+
+  return jwt.sign(
+    { userId, userType },
+    process.env.JWT_SECRET,
+    { expiresIn: '1d' } // Token expires in one day
+  );
+};
+
+
+interface CustomRequest extends Request {
+  user?: { userId: string; userType: string };
+}
+
 
 // Register New User
 
+export const register = catchAsync(async (req : any, res : Response, next : NextFunction) => {
+  
+  const { firstName, lastName, email, password, userType } = req.body;
 
+   // Check for the presence of all required fields
+   if (!firstName || !lastName || !email || !password || !userType) {
+    return res.status(400).json({
+      status: "error",
+      message: "All fields must be provided: firstName, lastName, email, password, userType",
+    });
+  }
 
-exports.register = catchAsync(async (req, res, next) => {
-  const { firstName, lastName, email, password } = req.body;
+    let UserDiscriminator;
+
+    switch (userType) {
+        case 'genUser':
+            UserDiscriminator = GeneralUser;
+            break;
+        case 'adminUser':
+            UserDiscriminator = AdminUser;
+            break;
+        case 'applicationAdminUser':
+            UserDiscriminator = ApplicationAdminUser;
+            break;
+        default:
+            return res.status(400).json({
+                status: "error",
+                message: "Invalid user type specified",
+            });
+    }
 
   const filteredBody = filterObj(
     req.body,
     "firstName",
     "lastName",
     "email",
-    "password"
+    "password",
+    "userType"
   );
 
   // check if a verified user with given email exists
 
-  const existing_user = await User.findOne({ email: email });
+  const existing_user = await UserDiscriminator.findOne({ email: email });
 
   if (existing_user && existing_user.verified) {
     // user with this email already exists, Please login
@@ -45,26 +86,48 @@ exports.register = catchAsync(async (req, res, next) => {
   } else if (existing_user) {
     // if not verified than update prev one
 
-    await User.findOneAndUpdate({ email: email }, filteredBody, {
+    await UserDiscriminator.findOneAndUpdate({ email: email }, filteredBody, {
       new: true,
       validateModifiedOnly: true,
     });
 
     // generate an otp and send to email
     req.userId = existing_user._id;
+    req.userType = existing_user.userType;
     next();
   } else {
     // if user is not created before than create a new one
-    const new_user = await User.create(filteredBody);
+    const new_user = await UserDiscriminator.create(filteredBody);
 
     // generate an otp and send to email
     req.userId = new_user._id;
+    req.userType = new_user.userType;
     next();
   }
 });
 
-exports.sendOTP = catchAsync(async (req, res, next) => {
-    const { userId } = req;
+exports.sendOTP = catchAsync(async (req : any, res : Response, next : NextFunction) => {
+    const { userId, userType } = req;
+
+    let UserDiscriminator;
+
+    switch (userType) {
+        case 'genUser':
+            UserDiscriminator = GeneralUser;
+            break;
+        case 'adminUser':
+            UserDiscriminator = AdminUser;
+            break;
+        case 'applicationAdminUser':
+            UserDiscriminator = ApplicationAdminUser;
+            break;
+        default:
+            return res.status(400).json({
+                status: "error",
+                message: "Invalid user type specified",
+            });
+    }
+
     const new_otp = otpGenerator.generate(6, {
         upperCaseAlphabets: false,
         specialChars: false,
@@ -74,7 +137,7 @@ exports.sendOTP = catchAsync(async (req, res, next) => {
   
     const otp_expiry_time = Date.now() + 10 * 60 * 1000; // 10 Mins after otp is sent
   
-    const user = await User.findByIdAndUpdate(userId, {
+    const user = await UserDiscriminator.findByIdAndUpdate(userId, {
       otp_expiry_time: otp_expiry_time,
     }, { new: true }); // Ensure that the updated document is returned
   
@@ -107,10 +170,30 @@ exports.sendOTP = catchAsync(async (req, res, next) => {
 });
   
 
-exports.verifyOTP = catchAsync(async (req, res, next) => {
+exports.verifyOTP = catchAsync(async (req : CustomRequest, res : Response, next : NextFunction) => {
   // verify otp and update user accordingly
-  const { email, otp } = req.body;
-  const user = await User.findOne({
+  const { email, otp, userType } = req.body;
+
+  let UserDiscriminator;
+
+    switch (userType) {
+        case 'genUser':
+            UserDiscriminator = GeneralUser;
+            break;
+        case 'adminUser':
+            UserDiscriminator = AdminUser;
+            break;
+        case 'applicationAdminUser':
+            UserDiscriminator = ApplicationAdminUser;
+            break;
+        default:
+            return res.status(400).json({
+                status: "error",
+                message: "Invalid user type specified",
+            });
+    }
+
+  const user = await UserDiscriminator.findOne({
     email,
     otp_expiry_time: { $gt: Date.now() },
   });
@@ -144,7 +227,7 @@ exports.verifyOTP = catchAsync(async (req, res, next) => {
     user.otp = undefined;
     await user.save({ validateModifiedOnly: true });
 
-    const token = signToken(user._id);
+    const token = signToken(user._id, user.userType);
 
     res.status(200).json({
         status: "success",
@@ -156,9 +239,27 @@ exports.verifyOTP = catchAsync(async (req, res, next) => {
 });    
 
 // User Login
-exports.login = catchAsync(async (req, res, next) => {
-  const { email, password } = req.body;
+exports.login = catchAsync(async (req : CustomRequest, res : Response, next : NextFunction) => {
+  const { email, password, userType } = req.body;
 
+  let UserDiscriminator;
+
+    switch (userType) {
+        case 'genUser':
+            UserDiscriminator = GeneralUser;
+            break;
+        case 'adminUser':
+            UserDiscriminator = AdminUser;
+            break;
+        case 'applicationAdminUser':
+            UserDiscriminator = ApplicationAdminUser;
+            break;
+        default:
+            return res.status(400).json({
+                status: "error",
+                message: "Invalid user type specified",
+            });
+    }
   // console.log(email, password);
 
   if (!email || !password) {
@@ -169,7 +270,7 @@ exports.login = catchAsync(async (req, res, next) => {
     return;
   }
 
-  const user = await User.findOne({ email: email }).select("+password");
+  const user = await UserDiscriminator.findOne({ email: email }).select("+password");
 
   if (!user || !user.password) {
     res.status(400).json({
@@ -189,7 +290,7 @@ exports.login = catchAsync(async (req, res, next) => {
     return;
   }
 
-  const token = signToken(user._id);
+  const token = signToken(user._id, user.userType);
 
   res.status(200).json({
     status: "success",
@@ -378,9 +479,29 @@ exports.protectApplicationAdminUser = catchAsync(async (req, res, next) => {
 });
 
 
-exports.forgotPassword = catchAsync(async (req, res, next) => {
+exports.forgotPassword = catchAsync(async (req : CustomRequest, res : Response, next : NextFunction) => {
   // 1) Get user based on POSTed email
-  const user = await User.findOne({ email: req.body.email });
+  const { email, userType } = req.body;
+  let UserDiscriminator;
+
+    switch (userType) {
+        case 'genUser':
+            UserDiscriminator = GeneralUser;
+            break;
+        case 'adminUser':
+            UserDiscriminator = AdminUser;
+            break;
+        case 'applicationAdminUser':
+            UserDiscriminator = ApplicationAdminUser;
+            break;
+        default:
+            return res.status(400).json({
+                status: "error",
+                message: "Invalid user type specified",
+            });
+    }
+
+  const user = await UserDiscriminator.findOne({ email: email });
   if (!user) {
     return res.status(404).json({
       status: "error",
@@ -424,12 +545,33 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
 exports.resetPassword = catchAsync(async (req, res, next) => {
   // 1) Get user based on the token
+  const {password, userType} = req.body;
+
+  let UserDiscriminator;
+
+    switch (userType) {
+        case 'genUser':
+            UserDiscriminator = GeneralUser;
+            break;
+        case 'adminUser':
+            UserDiscriminator = AdminUser;
+            break;
+        case 'applicationAdminUser':
+            UserDiscriminator = ApplicationAdminUser;
+            break;
+        default:
+            return res.status(400).json({
+                status: "error",
+                message: "Invalid user type specified",
+            });
+    }
+
   const hashedToken = crypto
     .createHash("sha256")
     .update(req.body.token)
     .digest("hex");
 
-  const user = await User.findOne({
+  const user = await UserDiscriminator.findOne({
     passwordResetToken: hashedToken,
     passwordResetExpires: { $gt: Date.now() },
   });
@@ -441,14 +583,14 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
       message: "Token is Invalid or Expired",
     });
   }
-  user.password = req.body.password;
+  user.password = password;
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
   await user.save();
 
   // 3) Update changedPasswordAt property for the user
   // 4) Log the user in, send JWT
-  const token = signToken(user._id);
+  const token = signToken(user._id, user.userType);
 
   res.status(200).json({
     status: "success",

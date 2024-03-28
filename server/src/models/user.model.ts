@@ -5,8 +5,10 @@ import crypto from "crypto";
 interface IUserDocument extends Document {
   firstName: string;
   lastName: string;
+  userType: 'genUser' | 'adminuser' | 'applicationAdminUser';
   about?: string;
   avatar?: string;
+  attendingEvents: Types.ObjectId[];
   email: string;
   password: string;
   passwordChangedAt?: Date;
@@ -51,12 +53,18 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Last Name is required"],
   },
+  userType: {
+    type: String,
+    enum: ['genUser', 'adminUser', 'applicationAdminUser'],
+    required: true,
+  },
   about: {
     type: String,
   },
   avatar: {
     type: String,
   },
+  attendingEvents: [{ type: Types.ObjectId, ref: 'Event' }],
   email: {
     type: String,
     required: [true, "Email is required"],
@@ -74,6 +82,7 @@ const userSchema = new mongoose.Schema({
   password: {
     // unselect
     type: String,
+    required : true,
   },
   passwordChangedAt: {
     // unselect
@@ -180,29 +189,30 @@ userSchema.methods.createPasswordResetToken = function () {
   return resetToken;
 };
 
-const User: IUserModel = mongoose.model<IUserDocument>('User', userSchema);
+
+// genUserSchema.methods.changedPasswordAfter = function (JWTTimeStamp: any) {
+//   if (this.passwordChangedAt) {
+//     const changedTimeStamp = Math.floor(this.passwordChangedAt.getTime() / 1000);
+//     return JWTTimeStamp < changedTimeStamp;
+//   }
+
+//   // FALSE MEANS NOT CHANGED
+//   return false;
+// };
 
 const genUserSchema = new mongoose.Schema({});
-genUserSchema.methods.changedPasswordAfter = function (JWTTimeStamp: any) {
-  if (this.passwordChangedAt) {
-    const changedTimeStamp = Math.floor(this.passwordChangedAt.getTime() / 1000);
-    return JWTTimeStamp < changedTimeStamp;
-  }
-
-  // FALSE MEANS NOT CHANGED
-  return false;
-};
-
-const GeneralUser : IGeneralUserModel = User.discriminator<IGeneralUserDocument>('GeneralUser', genUserSchema);
-const AdminUser : IAdminUserModel = User.discriminator<IAdminUserDocument>('AdminUser', new mongoose.Schema({
+const adminUserSchema = new mongoose.Schema({
   isCommunityAdmin: { type: Boolean, required: true },
   communityName: { type: String, required: true },
   organizationName: { type: String, required: true },
   postedEvents: [{ type: Types.ObjectId, ref: 'Event' }]
-}));
-const ApplicationAdminUser : IApplicationAdminUserModel = User.discriminator<IApplicationAdminUserDocument>('ApplicationAdminUser', new mongoose.Schema({
+});
+const applicationAdminUserSchema = new mongoose.Schema({});
 
-}));
+const User: IUserModel = mongoose.model<IUserDocument>('User', userSchema);
+const GeneralUser : IGeneralUserModel = User.discriminator<IGeneralUserDocument>('GeneralUser', genUserSchema);
+const AdminUser : IAdminUserModel = User.discriminator<IAdminUserDocument>('AdminUser', adminUserSchema);
+const ApplicationAdminUser : IApplicationAdminUserModel = User.discriminator<IApplicationAdminUserDocument>('ApplicationAdminUser', applicationAdminUserSchema);
 
 export default User;
 export { GeneralUser, AdminUser, ApplicationAdminUser };
