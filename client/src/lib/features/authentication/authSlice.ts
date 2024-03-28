@@ -5,12 +5,13 @@ interface AuthState {
   user: {
     username: string | null;
     password: string | null;
+    role:string | null;
   }; // Replace 'any' with the type of your user object
 }
 
 const initialState: AuthState = {
   isAuthenticated: false,
-  user:{username:null,password:null},
+  user:{username:null,password:null,role:null},
 };
 
 const authSlice = createSlice({
@@ -23,7 +24,7 @@ const authSlice = createSlice({
     },
     logout(state) {
       state.isAuthenticated = false;
-      state.user = {username:null,password:null};
+      state.user = {username:null,password:null,role:null};
     },
   },
 });

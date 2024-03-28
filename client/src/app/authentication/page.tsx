@@ -5,7 +5,7 @@ import UserRegister from '@/components/UserRegister/UserRegister'
 import React, { useState } from 'react'
 
 const Authentication = () => {
-  const[newUser, setNewUser]=useState(false);
+  const[newUser, setNewUser]=useState(true);
 
   const handleClick=()=>{
     setNewUser(!newUser);

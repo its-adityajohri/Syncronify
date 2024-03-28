@@ -14,8 +14,7 @@
     right: 40px;
     width: 300px;
     background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 10px;
   }
   
   .header {
@@ -29,6 +28,8 @@
   
   .close-button {
     background-color: transparent;
+    padding-right: 1rem;
+    font-weight: bold;
     color: white;
     border: none;
     cursor: pointer;
@@ -77,4 +78,13 @@
     /* min-width:fit-content ; */
     max-width: 200px;
     padding: 2px 5px;
+    overflow-wrap: break-word;
+  }
+
+  .admin-photo{
+    width: 3rem;
+    outline: white solid 1px;
+    height: 3rem;
+    object-fit: cover;
+    border-radius: 50%;
   }

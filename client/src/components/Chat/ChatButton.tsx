@@ -7,7 +7,7 @@ interface ChatButtonProps {
 
 const ChatButton: React.FC<ChatButtonProps> = ({ onClick }) => {
   return (
-    <button onClick={onClick} className="chat-button text-lg rounded-xl">
+    <button onClick={onClick} className="chat-button text-lg rounded-xl bg-[#0f172a] mt-5">
       Chat
     </button>
   );
