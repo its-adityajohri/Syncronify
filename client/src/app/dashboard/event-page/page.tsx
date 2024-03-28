@@ -5,7 +5,7 @@ import React from 'react'
 
 const eventPage = () => {
   return (
-    <div>
+    <div className=''>
       <EventPage/>
     </div>
   )

@@ -35,11 +35,13 @@ const routes = [
 
 const AdminDashboardLayout: React.FC<AdminDashboardLayoutProps> = ({ children }) => {
   return (
-    <section className='flex'>
+    <section className='flex h-screen'>
       <SideBar routes = {routes} />
       <div className="flex flex-col flex-1">
         <Navbar />
-        {children}
+        <div className="overflow-auto flex-1">
+          {children}
+        </div>
       </div>
     </section>
   );
