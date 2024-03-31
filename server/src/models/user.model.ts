@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import crypto from "crypto";
 
 interface IUserDocument extends Document {
+  userName: string;
   firstName: string;
   lastName: string;
   userType: 'genUser' | 'adminuser' | 'applicationAdminUser';
@@ -31,6 +32,7 @@ interface IUserDocument extends Document {
 
 interface IGeneralUserDocument extends IUserDocument {}
 interface IAdminUserDocument extends IUserDocument {
+  isApproved: boolean;
   isCommunityAdmin: boolean;
   communityName: string;
   organizationName: string;
@@ -45,13 +47,15 @@ interface IAdminUserModel extends Model<IAdminUserDocument> {}
 interface IApplicationAdminUserModel extends Model<IApplicationAdminUserDocument> {}
 
 const userSchema = new mongoose.Schema({
+  userName: {
+    type: String,
+    required: [true, "Username is required"],
+  },
   firstName: {
     type: String,
-    required: [true, "First Name is required"],
   },
   lastName: {
     type: String,
-    required: [true, "Last Name is required"],
   },
   userType: {
     type: String,
@@ -202,9 +206,10 @@ userSchema.methods.createPasswordResetToken = function () {
 
 const genUserSchema = new mongoose.Schema({});
 const adminUserSchema = new mongoose.Schema({
-  isCommunityAdmin: { type: Boolean, required: true },
-  communityName: { type: String, required: true },
-  organizationName: { type: String, required: true },
+  isApproved: { type: Boolean},
+  isCommunityAdmin: { type: Boolean },
+  communityName: { type: String },
+  organizationName: { type: String },
   postedEvents: [{ type: Types.ObjectId, ref: 'Event' }]
 });
 const applicationAdminUserSchema = new mongoose.Schema({});

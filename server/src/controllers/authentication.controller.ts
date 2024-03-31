@@ -35,13 +35,13 @@ interface CustomRequest extends Request {
 
 export const register = catchAsync(async (req : any, res : Response, next : NextFunction) => {
   
-  const { firstName, lastName, email, password, userType } = req.body;
+  const { userName, email, password, userType } = req.body;
 
    // Check for the presence of all required fields
-   if (!firstName || !lastName || !email || !password || !userType) {
+   if (!userName || !email || !password || !userType) {
     return res.status(400).json({
       status: "error",
-      message: "All fields must be provided: firstName, lastName, email, password, userType",
+      message: "All fields must be provided: userName, email, password, userType",
     });
   }
 
@@ -66,8 +66,7 @@ export const register = catchAsync(async (req : any, res : Response, next : Next
 
   const filteredBody = filterObj(
     req.body,
-    "firstName",
-    "lastName",
+    "userName",
     "email",
     "password",
     "userType"
@@ -156,7 +155,7 @@ exports.sendOTP = catchAsync(async (req : any, res : Response, next : NextFuncti
     console.log(new_otp);
   
     sendEmail({
-      from: "yourEmail@example.com", 
+      from: "adityajohri2015@gmail.com", 
       to: user.email,
       subject: "Verification OTP",
       html: otp(user.firstName, new_otp), 
@@ -229,11 +228,17 @@ exports.verifyOTP = catchAsync(async (req : CustomRequest, res : Response, next 
 
     const token = signToken(user._id, user.userType);
 
+    res.cookie('jwt', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', // Set secure to true if in production (HTTPS)
+    });
+    
+    // Send the rest of the response data in the response body
     res.status(200).json({
-        status: "success",
-        message: "OTP verified Successfully!",
-        token,
-        user_id: user._id,
+      status: "success",
+      message: "OTP verified successfully!",
+      user_id: user._id,
+      // Optionally, include other user details as needed but exclude sensitive information
     });
 
 });    
@@ -292,191 +297,220 @@ exports.login = catchAsync(async (req : CustomRequest, res : Response, next : Ne
 
   const token = signToken(user._id, user.userType);
 
+  res.cookie('jwt', token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production', // Set secure to true if in production (HTTPS)
+  });
+  
+  // Send the rest of the response data in the response body
   res.status(200).json({
     status: "success",
     message: "Logged in successfully!",
-    token,
     user_id: user._id,
+    // Optionally, include other user details as needed but exclude sensitive information
   });
 });
 
 // Protect
-exports.protect = catchAsync(async (req, res, next) => {
-  // 1) Getting token and check if it's there
-  let token;
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    token = req.headers.authorization.split(" ")[1];
+// exports.protect = catchAsync(async (req, res, next) => {
+//   // 1) Getting token and check if it's there
+//   let token;
+//   if (
+//     req.headers.authorization &&
+//     req.headers.authorization.startsWith("Bearer")
+//   ) {
+//     token = req.headers.authorization.split(" ")[1];
+//   } else if (req.cookies.jwt) {
+//     token = req.cookies.jwt;
+//   }
+
+//   if (!token) {
+//       return res.status(401).json({
+//           message: "You are not logged in! Please log in to get access.",
+//       });
+//   }
+//   // 2) Verification of token
+//   let decoded;
+//     try {
+//       decoded = jwt.verify(token, JWT_SECRET); // Assuming JWT_SECRET is defined in your environment variables
+//     } catch (err) {
+//       return res.status(401).json({
+//         message: "Invalid token. Please log in again.",
+//       });
+//     }
+
+//   console.log(decoded);
+
+//   // 3) Check if user still exists
+
+//   const this_user = await User.findById(decoded.userId);
+//     if (!this_user) {
+//       return res.status(401).json({
+//         message: "The user belonging to this token does no longer exists.",
+//       });
+//     }
+//     // 4) Check if user changed password after the token was issued
+//     if (this_user.changedPasswordAfter(decoded.iat)) {
+//       return res.status(401).json({
+//         message: "User recently changed password! Please log in again.",
+//       });
+//     }
+
+//     // GRANT ACCESS TO PROTECTED ROUTE
+//     req.user = this_user;
+//     next();
+// });
+
+export const protectGeneralUser = async (req: CustomRequest, res: Response, next: NextFunction) => {
+  let token: string | undefined;
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    token = req.headers.authorization.split(' ')[1];
   } else if (req.cookies.jwt) {
     token = req.cookies.jwt;
   }
 
   if (!token) {
-      return res.status(401).json({
-          message: "You are not logged in! Please log in to get access.",
-      });
-  }
-  // 2) Verification of token
-  let decoded;
-    try {
-      decoded = jwt.verify(token, JWT_SECRET); // Assuming JWT_SECRET is defined in your environment variables
-    } catch (err) {
-      return res.status(401).json({
-        message: "Invalid token. Please log in again.",
-      });
-    }
-
-  console.log(decoded);
-
-  // 3) Check if user still exists
-
-  const this_user = await User.findById(decoded.userId);
-    if (!this_user) {
-      return res.status(401).json({
-        message: "The user belonging to this token does no longer exists.",
-      });
-    }
-    // 4) Check if user changed password after the token was issued
-    if (this_user.changedPasswordAfter(decoded.iat)) {
-      return res.status(401).json({
-        message: "User recently changed password! Please log in again.",
-      });
-    }
-
-    // GRANT ACCESS TO PROTECTED ROUTE
-    req.user = this_user;
-    next();
-});
-
-exports.protectGeneralUser = catchAsync(async (req, res, next) => {
-  let token;
-  if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
-      token = req.headers.authorization.split(" ")[1];
-  } else if (req.cookies.jwt) {
-      token = req.cookies.jwt;
-  }
-
-  if (!token) {
-      return res.status(401).json({
-          message: "You are not logged in! Please log in to get access.",
-      });
+    return res.status(401).json({
+      message: 'You are not logged in! Please log in to get access.',
+    });
   }
 
   let decoded;
-    try {
-      decoded = jwt.verify(token, JWT_SECRET); // Assuming JWT_SECRET is defined in your environment variables
-    } catch (err) {
-      return res.status(401).json({
-        message: "Invalid token. Please log in again.",
-      });
-    }
+  try {
+    decoded = jwt.verify(token, JWT_SECRET) as jwt.JwtPayload;
+  } catch (err) {
+    return res.status(401).json({
+      message: 'Invalid token. Please log in again.',
+    });
+  }
 
-  console.log(decoded);
+  if (!decoded.userId || decoded.userType !== 'genUser') {
+    return res.status(403).json({
+      message: 'You do not have permission to perform this action.',
+    });
+  }
+
   const currentUser = await GeneralUser.findById(decoded.userId);
-
   if (!currentUser) {
-      return res.status(401).json({
-          message: "The user belonging to this token no longer exists.",
-      });
+    return res.status(401).json({
+      message: 'The user belonging to this token no longer exists.',
+    });
   }
 
   if (currentUser.changedPasswordAfter(decoded.iat)) {
-      return res.status(401).json({
-          message: "User recently changed password! Please log in again.",
-      });
+    return res.status(401).json({
+      message: 'User recently changed password! Please log in again.',
+    });
   }
 
-  req.user = currentUser;
+  req.user = {
+    userId: currentUser._id.toString(), // Assuming _id is available and needs conversion to string
+    userType: currentUser.userType,
+  };
+
   next();
-});
+};
 
-
-exports.protectAdminUser = catchAsync(async (req, res, next) => {
-  let token;
-  if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
-      token = req.headers.authorization.split(" ")[1];
+export const protectAdminUser = async (req: CustomRequest, res: Response, next: NextFunction) => {
+  let token: string | undefined;
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    token = req.headers.authorization.split(' ')[1];
   } else if (req.cookies.jwt) {
-      token = req.cookies.jwt;
+    token = req.cookies.jwt;
   }
 
   if (!token) {
-      return res.status(401).json({
-          message: "You are not logged in! Please log in to get access.",
-      });
+    return res.status(401).json({
+      message: 'You are not logged in! Please log in to get access.',
+    });
   }
 
   let decoded;
-    try {
-      decoded = jwt.verify(token, JWT_SECRET); // Assuming JWT_SECRET is defined in your environment variables
-    } catch (err) {
-      return res.status(401).json({
-        message: "Invalid token. Please log in again.",
-      });
-    }
+  try {
+    decoded = jwt.verify(token, JWT_SECRET) as jwt.JwtPayload;
+  } catch (err) {
+    return res.status(401).json({
+      message: 'Invalid token. Please log in again.',
+    });
+  }
 
-  console.log(decoded);
+  if (!decoded.userId || decoded.userType !== 'adminUser') {
+    return res.status(403).json({
+      message: 'You do not have permission to perform this action.',
+    });
+  }
+
   const currentUser = await AdminUser.findById(decoded.userId);
-
   if (!currentUser) {
-      return res.status(401).json({
-          message: "The user belonging to this token no longer exists.",
-      });
+    return res.status(401).json({
+      message: 'The user belonging to this token no longer exists.',
+    });
   }
 
   if (currentUser.changedPasswordAfter(decoded.iat)) {
-      return res.status(401).json({
-          message: "User recently changed password! Please log in again.",
-      });
+    return res.status(401).json({
+      message: 'User recently changed password! Please log in again.',
+    });
   }
 
-  req.user = currentUser;
+  req.user = {
+    userId: currentUser._id.toString(), // Assuming _id is available and needs conversion to string
+    userType: currentUser.userType,
+  };
+
   next();
-});
+};
 
 
-exports.protectApplicationAdminUser = catchAsync(async (req, res, next) => {
-  let token;
-  if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
-      token = req.headers.authorization.split(" ")[1];
+export const protectApplicayionAdminUser = async (req: CustomRequest, res: Response, next: NextFunction) => {
+  let token: string | undefined;
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    token = req.headers.authorization.split(' ')[1];
   } else if (req.cookies.jwt) {
-      token = req.cookies.jwt;
+    token = req.cookies.jwt;
   }
 
   if (!token) {
-      return res.status(401).json({
-          message: "You are not logged in! Please log in to get access.",
-      });
+    return res.status(401).json({
+      message: 'You are not logged in! Please log in to get access.',
+    });
   }
 
   let decoded;
-    try {
-      decoded = jwt.verify(token, JWT_SECRET); // Assuming JWT_SECRET is defined in your environment variables
-    } catch (err) {
-      return res.status(401).json({
-        message: "Invalid token. Please log in again.",
-      });
-    }
+  try {
+    decoded = jwt.verify(token, JWT_SECRET) as jwt.JwtPayload;
+  } catch (err) {
+    return res.status(401).json({
+      message: 'Invalid token. Please log in again.',
+    });
+  }
 
-  console.log(decoded);
+  if (!decoded.userId || decoded.userType !== 'applicationAdminUser') {
+    return res.status(403).json({
+      message: 'You do not have permission to perform this action.',
+    });
+  }
+
   const currentUser = await ApplicationAdminUser.findById(decoded.userId);
-
   if (!currentUser) {
-      return res.status(401).json({
-          message: "The user belonging to this token no longer exists.",
-      });
+    return res.status(401).json({
+      message: 'The user belonging to this token no longer exists.',
+    });
   }
 
   if (currentUser.changedPasswordAfter(decoded.iat)) {
-      return res.status(401).json({
-          message: "User recently changed password! Please log in again.",
-      });
+    return res.status(401).json({
+      message: 'User recently changed password! Please log in again.',
+    });
   }
 
-  req.user = currentUser;
+  req.user = {
+    userId: currentUser._id.toString(), // Assuming _id is available and needs conversion to string
+    userType: currentUser.userType,
+  };
+
   next();
-});
+};
 
 
 exports.forgotPassword = catchAsync(async (req : CustomRequest, res : Response, next : NextFunction) => {
@@ -592,11 +626,29 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   // 4) Log the user in, send JWT
   const token = signToken(user._id, user.userType);
 
+  res.cookie('jwt', token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production', // Set secure to true if in production (HTTPS)
+  });
+  
+  // Send the rest of the response data in the response body
   res.status(200).json({
     status: "success",
-    message: "Password Reseted Successfully",
-    token,
+    message: "Password reset successfully!",
+    // Optionally, include other user details as needed but exclude sensitive information
   });
 });
 
 
+exports.logout = catchAsync(async (req: Request, res: Response) => {
+  // Clear the jwt cookie
+  res.clearCookie('jwt', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+  });
+
+  res.status(200).json({
+    status: "success",
+    message: "You have been logged out successfully.",
+  });
+});
