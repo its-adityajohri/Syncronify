@@ -9,11 +9,10 @@ import axios from 'axios';
 function UserRegister({handleClick}) {
 
     const[newUser, setNewUser]=useState({
-        username:'',
+        userName:'',
         email:'',
         password:'',
-        confirmPassword:'',
-        role:'',
+        userType:'',
     })
 
 
@@ -85,7 +84,7 @@ function UserRegister({handleClick}) {
                                 type='text' 
                                 id='username'
                                 name='username'
-                                value={newUser.username}
+                                value={newUser.userName}
                                 // readOnly={showOTP}
                                 onChange={handleChange}
                                 className={`px-3 py-2 rounded-lg outline-none duration-200 border text-[#1B1B1B] bg-slate-50 border-gray-200 w-full focus:text-gray-50 focus:bg-black`}
@@ -125,24 +124,8 @@ function UserRegister({handleClick}) {
                         </div>
 
                         <div className='space-y-2'>
-                            <label
-                                htmlFor='password'
-                                className="inline-block mt-2 pl-1"
-                            >Confirm Password</label>
-                            <input
-                                type='password'
-                                id='password'
-                                name='confirmPassword'
-                                value={newUser.confirmPassword}
-                                // readOnly={showOTP}
-                                onChange={handleChange}
-                                className={`px-3 py-2 rounded-lg outline-none duration-200 border text-[#1B1B1B] bg-slate-50 border-gray-200 w-full focus:text-gray-50 focus:bg-black`}
-                                placeholder='Password' />
-                        </div>
-
-                        <div className='space-y-2'>
                             <label htmlFor="role" className='inline-block mt-2 pl-1 text-bf'>Select Role:</label>
-                            <select id="role" name='role' value={newUser.role} onChange={handleChange} className='px-3 py-2 rounded-lg outline-none duration-200 border text-[#1B1B1B] bg-slate-50 border-gray-200 w-full focus:text-gray-50 focus:bg-black'>
+                            <select id="role" name='role' value={newUser.userType} onChange={handleChange} className='px-3 py-2 rounded-lg outline-none duration-200 border text-[#1B1B1B] bg-slate-50 border-gray-200 w-full focus:text-gray-50 focus:bg-black'>
                                 <option value="">Select a role</option>
                                 <option value="user">User</option>
                                 <option value="admin">Admin</option>

@@ -2,10 +2,10 @@
   "name": "express-boilerplate",
   "version": "1.0.0",
   "description": "",
-  "main": "app.ts",
+  "main": "serverMain.js",
   "scripts": {
     "build": "tsc --project tsconfig.json",
-    "start": "nodemon src/app.ts",
+    "start": "nodemon serverMain.js",
     "test": "npm run build && mocha dist/test/*"
   },
   "keywords": [],

@@ -34,7 +34,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-, "src/app/dashboard/event-page/[eventId]"  ],
+, "src/app/dashboard/event-page/[eventId]", "src/components/EventPage/EventPage.jsx", "src/app/dashboard/event-page/page.jsx"  ],
   "exclude": [
     "node_modules"
   ]
