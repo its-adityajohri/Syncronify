@@ -19,14 +19,16 @@ const eventSchema = new mongoose.Schema({
     enum: ['personal', 'posted'],
     required: true,
   },
-  eventDate: { type: Date, required: true }, // Add event date
-  eventTiming: { // Add event timing with from and to times
-    from: String,
-    to: String,
-  },
+  eventDateTo: { type: Date, required: true }, // Add event date
+  eventDateFrom: { type: Date, required: true },
   createdAt: {
     type: Date,
     default: Date.now(),
+  },
+  admin: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: [true, 'Admin is required for posted events'],
   },
 });
 
@@ -41,11 +43,9 @@ const postedEventSchema = new mongoose.Schema({
   },
   communityName: {
     type: String,
-    required: [true, 'Community name is required for posted events'],
   },
   organizationName: {
     type: String,
-    required: [true, 'Organization name is required for posted events'],
   },
   contact: {
     type: String,
@@ -59,11 +59,7 @@ const postedEventSchema = new mongoose.Schema({
   capacity: {
     type: Number,
   },
-  admin: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: [true, 'Admin is required for posted events'],
-  },
+  
 });
 
 // Instance method to check if the event capacity has been reached

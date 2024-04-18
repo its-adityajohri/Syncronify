@@ -7,6 +7,7 @@ router.post('/create-personal-event', authController.protectGeneralUser,eventCon
 router.post('/create-event', authController.protectAdminUser,eventController.createPostedEvent);
 router.get('/user-events', authController.protectGeneralUser,eventController.getUserEvents);
 router.get('/all-organization-events', authController.protectAdminUser,eventController.getAllPostedEventsByAdmin);
-router.get('/event-details', authController.protectGeneralUser,eventController.getEventDetails);
+router.post('/event-details', authController.protectGeneralUser,eventController.getEventDetails);
+router.post('/add-event', authController.protectGeneralUser,eventController.addEventToUser);
 
 module.exports = router;

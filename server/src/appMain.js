@@ -3,6 +3,7 @@ const cors = require('cors');
 const express = require('express');
 // const webRoutes = require('./routes/web'); // Uncomment and adjust the path as necessary
 const authRoutes = require('./routes/authMain.js');
+const eventRoutes = require('./routes/eventRoutes.js');
 const errorHandler = require('./middleware/errorHandler.js');
 
 
@@ -39,10 +40,11 @@ const app = express();
 app.use(cors());
 
 app.use(express.json());
-
+app.use("/", express.static(path.join(__dirname,"./uploads")));
 app.use('/health', (req, res) => res.status(200).send({ message: 'Synchronify Http and Tcp-socket servers are running' }));
 // app.use('/api', webRoutes); // Uncomment when webRoutes are converted to CommonJS
 app.use('/api/auth', authRoutes);
+app.use('/api', eventRoutes);
 app.post('/verifyOTP', async (req, res) => {
   const { email, otp } = req.body;
   const user = await GeneralUser.findOne({
