@@ -76,7 +76,6 @@ const postedEventSchema = new mongoose.Schema({
   // PostedEvent specific fields here
   extraInfo: {
     type: String,
-    required: [true, 'Extra information is required for posted events'],
   },
   communityName: {
     type: String,
@@ -88,7 +87,6 @@ const postedEventSchema = new mongoose.Schema({
   },
   contact: {
     type: String,
-    required: [true, 'Contact information is required for posted events'],
   },
   attendees: [
     {
@@ -98,7 +96,6 @@ const postedEventSchema = new mongoose.Schema({
   ],
   capacity: {
     type: Number,
-    required: [true, 'Capacity is required for posted events'],
   },
   admin: {
     type: mongoose.Schema.ObjectId,

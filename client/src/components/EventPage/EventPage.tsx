@@ -42,9 +42,9 @@ interface admin {
   email: string;
 }
 
-const EventPage: React.FC = () => {
+const EventPage = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const eventArray: eventData[] = [
+  const eventArray = [
     {
       id: 0,
       event: {
@@ -121,11 +121,11 @@ const EventPage: React.FC = () => {
 
   const router = useRouter();
 
-  const searchEvents = (event: React.ChangeEvent<HTMLInputElement>): void => {
+  const searchEvents = (event) => {
     setSearchTerm(event.target.value.toLowerCase());
   };
 
-  const clearSearch = (): void => {
+  const clearSearch = () => {
     setSearchTerm("");
   };
 

@@ -3,10 +3,13 @@ import bcrypt from "bcryptjs";
 import crypto from "crypto";
 
 interface IUserDocument extends Document {
+  userName: string;
   firstName: string;
   lastName: string;
+  userType: 'genUser' | 'adminuser' | 'applicationAdminUser';
   about?: string;
   avatar?: string;
+  attendingEvents: Types.ObjectId[];
   email: string;
   password: string;
   passwordChangedAt?: Date;
@@ -29,6 +32,7 @@ interface IUserDocument extends Document {
 
 interface IGeneralUserDocument extends IUserDocument {}
 interface IAdminUserDocument extends IUserDocument {
+  isApproved: boolean;
   isCommunityAdmin: boolean;
   communityName: string;
   organizationName: string;
@@ -43,13 +47,20 @@ interface IAdminUserModel extends Model<IAdminUserDocument> {}
 interface IApplicationAdminUserModel extends Model<IApplicationAdminUserDocument> {}
 
 const userSchema = new mongoose.Schema({
+  userName: {
+    type: String,
+    required: [true, "Username is required"],
+  },
   firstName: {
     type: String,
-    required: [true, "First Name is required"],
   },
   lastName: {
     type: String,
-    required: [true, "Last Name is required"],
+  },
+  userType: {
+    type: String,
+    enum: ['genUser', 'adminUser', 'applicationAdminUser'],
+    required: true,
   },
   about: {
     type: String,
@@ -57,6 +68,7 @@ const userSchema = new mongoose.Schema({
   avatar: {
     type: String,
   },
+  attendingEvents: [{ type: Types.ObjectId, ref: 'Event' }],
   email: {
     type: String,
     required: [true, "Email is required"],
@@ -74,6 +86,7 @@ const userSchema = new mongoose.Schema({
   password: {
     // unselect
     type: String,
+    required : true,
   },
   passwordChangedAt: {
     // unselect
@@ -180,29 +193,31 @@ userSchema.methods.createPasswordResetToken = function () {
   return resetToken;
 };
 
-const User: IUserModel = mongoose.model<IUserDocument>('User', userSchema);
+
+// genUserSchema.methods.changedPasswordAfter = function (JWTTimeStamp: any) {
+//   if (this.passwordChangedAt) {
+//     const changedTimeStamp = Math.floor(this.passwordChangedAt.getTime() / 1000);
+//     return JWTTimeStamp < changedTimeStamp;
+//   }
+
+//   // FALSE MEANS NOT CHANGED
+//   return false;
+// };
 
 const genUserSchema = new mongoose.Schema({});
-genUserSchema.methods.changedPasswordAfter = function (JWTTimeStamp: any) {
-  if (this.passwordChangedAt) {
-    const changedTimeStamp = Math.floor(this.passwordChangedAt.getTime() / 1000);
-    return JWTTimeStamp < changedTimeStamp;
-  }
-
-  // FALSE MEANS NOT CHANGED
-  return false;
-};
-
-const GeneralUser : IGeneralUserModel = User.discriminator<IGeneralUserDocument>('GeneralUser', genUserSchema);
-const AdminUser : IAdminUserModel = User.discriminator<IAdminUserDocument>('AdminUser', new mongoose.Schema({
-  isCommunityAdmin: { type: Boolean, required: true },
-  communityName: { type: String, required: true },
-  organizationName: { type: String, required: true },
+const adminUserSchema = new mongoose.Schema({
+  isApproved: { type: Boolean},
+  isCommunityAdmin: { type: Boolean },
+  communityName: { type: String },
+  organizationName: { type: String },
   postedEvents: [{ type: Types.ObjectId, ref: 'Event' }]
-}));
-const ApplicationAdminUser : IApplicationAdminUserModel = User.discriminator<IApplicationAdminUserDocument>('ApplicationAdminUser', new mongoose.Schema({
+});
+const applicationAdminUserSchema = new mongoose.Schema({});
 
-}));
+const User: IUserModel = mongoose.model<IUserDocument>('User', userSchema);
+const GeneralUser : IGeneralUserModel = User.discriminator<IGeneralUserDocument>('GeneralUser', genUserSchema);
+const AdminUser : IAdminUserModel = User.discriminator<IAdminUserDocument>('AdminUser', adminUserSchema);
+const ApplicationAdminUser : IApplicationAdminUserModel = User.discriminator<IApplicationAdminUserDocument>('ApplicationAdminUser', applicationAdminUserSchema);
 
 export default User;
 export { GeneralUser, AdminUser, ApplicationAdminUser };

@@ -42,7 +42,7 @@ const Calendar = () => {
   const [allEvents, setAllEvents]=useState(data)
   const calendarRef = useRef(null);
 
-  const handleCreateEvent=(startTime)=>{
+  const handleCreateEvent=(startTime: Date)=>{
     alert(`called create Event ${startTime}`)
   }
 
@@ -159,13 +159,12 @@ const Calendar = () => {
             text: 'Create New Event +',
             // hint: "Next 2022",
             click: () => {
-              // calendar.changeView( 'resourceTimelineWeek' );
+              if (calendarRef.current) {
+                console.log(
+                  calendarRef.current.calendar.currentData.dateProfile.currentRange
+                );
+              }
               handleCreateEvent(start)
-              // calendar.incrementDate( { days: -7 } );
-              console.log(
-                calendarRef.current.calendar.currentData.dateProfile
-                  .currentRange
-              );
             },
           },
           custom2: {
