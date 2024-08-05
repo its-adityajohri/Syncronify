@@ -7,6 +7,7 @@ import { useLocationContext } from '@/context/LocationContext';
 import getPlaces from '../MapBox/API/getPlaces';
 import { Button } from '../ui/button';
 import { useDropzone } from 'react-dropzone';
+import { useEvent } from '@/context/EventContext';
 
 interface CreateEventProps {
   isCreateActive: boolean;
@@ -19,25 +20,42 @@ const CreateEvent: React.FC<CreateEventProps> = ({
   handleCreateActive,
   handleBrowseMap,
 }) => {
-  const [title, setTitle] = useState('');
-  const [inputLocation, setInputLocation]=useState('');
   const [suggestions, setSuggestions]=useState<{
     place_name: string;
     latitude: number;
     longitude: number;
     id: string;
   }[]>([]);
-  const [description, setDescription] = useState('');
-  const [fromDate, setFromDate] = useState(new Date());
-  const [toDate, setToDate] = useState(new Date());
+
+  const {createNewEvent} = useEvent();
   const {location, setLocation, handleLocation}=useLocationContext();
-  const [imageUrl, setImageUrl]=useState<string>("");
+
+  const [eventDetail, setEventDetail]=useState<{
+    title: string,
+    location: string,
+    description: string,
+    fromDate: Date,
+    toDate: Date,
+    imageUrl: string,
+}>({
+    title: '',
+    location: '',
+    description: '',
+    fromDate:new Date(),
+    toDate:new Date(),
+    imageUrl: '',
+  })
+
+  const handleChange=(event:any)=>{
+    const {name, value}=event.target;
+    setEventDetail({...eventDetail, [name]:value});
+  };
 
 
   const handleInputLocation= async (event: React.ChangeEvent<HTMLInputElement>)=>{
     const query=event.target.value;
-    location&&setLocation({...location, name:query})
-    setInputLocation(query);
+    setEventDetail({...eventDetail, location:query})
+    // setInputLocation(query);
     console.log(location);
 
     const response=await getPlaces(query);
@@ -45,9 +63,9 @@ const CreateEvent: React.FC<CreateEventProps> = ({
   }
 
   const handleSelectedSuggestion=(suggestion:any)=>{
-    console.log(suggestion)
-    setInputLocation(suggestion.place_name)
-    setLocation({name: suggestion.place_name, latitude: suggestion.center[0], longitude: suggestion.center[1]})
+    console.log(suggestion);
+    setEventDetail({...eventDetail, location:suggestion.place_name});
+    setLocation({name: suggestion.place_name, latitude: suggestion.center[0], longitude: suggestion.center[1]});
     setSuggestions([]);
   }
 
@@ -65,10 +83,12 @@ const CreateEvent: React.FC<CreateEventProps> = ({
   //   setLocation(newLocation);
   // }
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Handle form submission
-    console.log('Form submitted:', title, description, fromDate, toDate, location);
+    const response = await createNewEvent(eventDetail);
+    // console.log(response);
+    console.log('Form submitted:', eventDetail);
     handleCreateActive(false);
   };
 
@@ -85,23 +105,25 @@ const CreateEvent: React.FC<CreateEventProps> = ({
         >
           <FaPlus />
         </div>
-        <h1 className="text-3xl my-5 font-bold">Create Event</h1>
+        <h1 className="text-3xl my-5 font-bold">Create Private Event</h1>
         <form onSubmit={handleFormSubmit} className="flex flex-col gap-5">
           <h1 className="">Title</h1>
           <input
             type="text"
+            name='title'
             placeholder='Event title here...'
             className="p-2 bg-transparent outline-none border-gray-500/70 border-2 rounded-lg"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            value={eventDetail.title}
+            onChange={handleChange}
           />
           <h1 className="">Description</h1>
           <input
             type="text"
+            name='description'
             placeholder='Describe your event here...'
             className="p-2 bg-transparent outline-none border-gray-500/70 border-2 rounded-lg"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            value={eventDetail.description}
+            onChange={handleChange}
           />
 
           <h1 className="">Event Image</h1>
@@ -109,10 +131,11 @@ const CreateEvent: React.FC<CreateEventProps> = ({
           {/* Temp Image link option */}
           <input
             type="text"
+            name='imageUrl'
             placeholder='place your image url here...'
             className="p-2 bg-transparent outline-none border-gray-500/70 border-2 rounded-lg"
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
+            value={eventDetail.imageUrl}
+            onChange={handleChange}
           />
 
           <h1 className="font-semibold">Duration</h1>
@@ -121,8 +144,9 @@ const CreateEvent: React.FC<CreateEventProps> = ({
               <h3 className="">From:</h3>
               <DatePicker
                 className="bg-gray-300 flex border-2 border-gray-500/70 rounded-lg p-1 font-semibold cursor-pointer"
-                selected={fromDate}
-                onChange={(date) => setFromDate(date!)}
+                name='fromDate'
+                selected={eventDetail.fromDate}
+                onChange={(date) => setEventDetail({...eventDetail, fromDate:date!})}
                 showTimeSelect
                 dateFormat="MMMM d, yyyy h:mm aa"
                 timeFormat="h:mm aa"
@@ -136,8 +160,9 @@ const CreateEvent: React.FC<CreateEventProps> = ({
               <h3 className="">To:</h3>
               <DatePicker
                 className="bg-gray-300 flex border-2 border-gray-500/70 rounded-lg p-1 font-semibold cursor-pointer"
-                selected={toDate}
-                onChange={(date) => setToDate(date!)}
+                name='toDate'
+                selected={eventDetail.toDate}
+                onChange={(date) => setEventDetail({...eventDetail, toDate:date!})}
                 showTimeSelect
                 dateFormat="MMMM d, yyyy h:mm aa"
                 timeFormat="h:mm aa"
@@ -154,16 +179,17 @@ const CreateEvent: React.FC<CreateEventProps> = ({
           <div className="relative flex items-center gap-20">
           <input
             type="text"
+            name='location'
             className="p-2 bg-transparent outline-none border-gray-500/70 border-2 block rounded-lg w-2/3"
             placeholder="Search for location"
-            value={location?.name? location.name : inputLocation}
+            value={eventDetail.location}
             onChange={handleInputLocation}
           />
           {/* Display suggestions */}
             <ul className="absolute bg-gray-200 rounded-xl backdrop-blur top-11 w-2/3 drop-shadow-xl max-h-[150px] overflow-y-scroll">
               {suggestions.map(
                 (suggestion: any) =>
-                  inputLocation?.length > 0 && (
+                  eventDetail.location?.length > 0 && (
                     <li
                       key={suggestion.id}
                       onClick={() =>handleSelectedSuggestion(suggestion)
@@ -176,7 +202,7 @@ const CreateEvent: React.FC<CreateEventProps> = ({
               )}
 
               {/* If there are no suggestions, show 'Pick location from map'  */}
-              {!suggestions.length && inputLocation?.length > 0 && (
+              {!suggestions.length && eventDetail.location?.length > 0 && (
                 <li className="bg-gray-200 hover:bg-gray-500/50 cursor-pointer py-1">
                   Pick location from map
                 </li>

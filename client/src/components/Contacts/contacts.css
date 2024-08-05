@@ -18,7 +18,11 @@
   .contactMessage{
     overflow-wrap: break-word;
     max-width: 350px;
+    /* max-width: fit-content; */
+    /* text-justify: auto; */
     padding: 2px 5px;
+    border-radius: 5px;
+    /* background-color: #f0f0f0; */
   }
   .usersList {
     flex: 1;
@@ -75,7 +79,7 @@
     padding: 10px;
     display:flex;
     flex-direction: column;
-    align-items:right;
+    /* align-items:right; */
   }
   .inputArea {
     display: flex;

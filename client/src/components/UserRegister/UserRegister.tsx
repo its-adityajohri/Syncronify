@@ -1,19 +1,46 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 function UserRegister({handleClick}) {
+
+    const router=useRouter();
+
+    const {register, verifyOtp, resendOtp}=useAuth()
 
     const[newUser, setNewUser]=useState({
         userName:'',
         email:'',
         password:'',
         userType:'',
-    })
+    });
+    const [sentOtp, setSentOtp]=useState(false);
+    const [otp, setOtp]=useState('');
+    const [isTimeUp, setIsTimeUp]=useState(false);
+    const [timer, setTimer]=useState<number>(30);
+    const [user, setUser]=useState<any>({
+        userId:"",
+        userType:""
+    });
+
+    useEffect(() => {
+        if (timer > 0) {
+            const interval = setInterval(() => {
+                setTimer(prevTimer => prevTimer - 1);
+            }, 1000);
+
+            return () => clearInterval(interval);
+        } else {
+            setIsTimeUp(true);
+        }
+    }, [timer]);
+    
 
 
     const handleChange=(e:any)=>{
@@ -35,16 +62,65 @@ function UserRegister({handleClick}) {
         e.preventDefault();
         console.log(newUser);
         try{
-            // const response =await axios.post('/api/users',newUser);
-            // const {data}=response;
-            // console.log(data);
+            const response =await register(newUser);
+            const {user}=response;
+            console.log(user);
+            setUser({userId:user.userId, userType:user.userType});
+            if(response.message=="OTP Sent Successfully!"){
+                setSentOtp(true);
+                setTimer(30);
+            }
             RegisteredNotify();
             setTimeout(()=>{
-                handleClick();
+                // handleClick();
             },4000);
         }catch(err){
             console.log(err);
         }
+    };
+
+    const handleSubmitOtp=async (event:any)=>{
+        event.preventDefault();
+        const {email, userType} = newUser;
+        const response=await verifyOtp({email, otp, userType});
+        event?.preventDefault()
+        console.log('verified!', response);
+        if(response.status==='success'){
+            toast.success("User verified successfully", {
+                // 
+            });
+            setTimeout(()=>{
+                switch(userType){
+                    case "genUser":
+                        router.push('/dashboard');
+                        break;
+                    case "adminUser":
+                        router.push('/admin-dashboard');
+                        break;
+                    case "applicationAdminUser":
+                        router.push('/application-admin-dashboard');
+                        break;
+                    default:
+                        break;
+                }
+            },4000);
+        }
+        else{
+            alert("wrong otp!!");
+            setSentOtp(false);
+        }
+    };
+
+    const handleResendOtp=async (event:any)=>{
+        event?.preventDefault();
+        console.log("user",user);
+        const {userId, userType}=user;
+        // await resendOtp({userId, userType});
+        console.log('sent otp successfully!');
+        // 
+        
+        setTimer(30);
+        setIsTimeUp(false);
     }
 
 
@@ -74,16 +150,16 @@ function UserRegister({handleClick}) {
                         </Link>
                     </p>
 
-                    <form onSubmit={handleSubmit}>
+                    {!sentOtp && <form onSubmit={handleSubmit}>
                         <div className='space-y-2'>
                             <label
-                                htmlFor='username'
+                                htmlFor='userName'
                                 className="inline-block mt-2 pl-1"
                             >Username</label>
                             <input
                                 type='text' 
-                                id='username'
-                                name='username'
+                                id='userName'
+                                name='userName'
                                 value={newUser.userName}
                                 // readOnly={showOTP}
                                 onChange={handleChange}
@@ -125,11 +201,11 @@ function UserRegister({handleClick}) {
 
                         <div className='space-y-2'>
                             <label htmlFor="role" className='inline-block mt-2 pl-1 text-bf'>Select Role:</label>
-                            <select id="role" name='role' value={newUser.userType} onChange={handleChange} className='px-3 py-2 rounded-lg outline-none duration-200 border text-[#1B1B1B] bg-slate-50 border-gray-200 w-full focus:text-gray-50 focus:bg-black'>
+                            <select id="userType" name='userType' value={newUser.userType} onChange={handleChange} className='px-3 py-2 rounded-lg outline-none duration-200 border text-[#1B1B1B] bg-slate-50 border-gray-200 w-full focus:text-gray-50 focus:bg-black'>
                                 <option value="">Select a role</option>
-                                <option value="user">User</option>
-                                <option value="admin">Admin</option>
-                                <option value="application admin">Application Admin</option>
+                                <option value="genUser">User</option>
+                                <option value="adminUser">Admin</option>
+                                <option value="applicationAdminUser">Application Admin</option>
                                 {/* Add more options as needed */}
                             </select>
                             {/* Display selected role */}
@@ -141,11 +217,11 @@ function UserRegister({handleClick}) {
                             className={`w-full bg-slate-900 hover:bg-slate-950 text-slate-50 font-bold py-2 px-4 rounded-lg`}
                             >SignUp</button>
                         </div>
-                    </form>
+                    </form>}
 
-                    {/* {showOTP && 
-                        <form onSubmit={handleSubmitOTP}>
-                            <div className='space-y-2'>
+                    {sentOtp && 
+                        <form onSubmit={handleSubmitOtp}>
+                            <div className='space-y-2 flex flex-col'>
                                 <label
                                     htmlFor="otp"
                                     className="inline-block mt-2 pl-1"
@@ -155,9 +231,10 @@ function UserRegister({handleClick}) {
                                     name="otp"
                                     id="otp"
                                     value={otp}
-                                    onChange={(e) => setOTP(e.target.value)}
+                                    onChange={(e) => setOtp(e.target.value)}
                                     className={`px-3 py-2 rounded-lg outline-none duration-200 border text-[#1B1B1B] bg-slate-50 border-gray-200 w-full focus:text-gray-50 focus:bg-black`}
                                     />
+                                    <div className="ml-auto"><button onClick={handleResendOtp} disabled={!isTimeUp} className='bg-transparent text-sm text-blue-500'>{isTimeUp?"Resend OTP":`Resend in ${timer} seconds.`}</button></div>
                             </div>
                             <div className='space-y-5 pt-4'>
                                 <button
@@ -165,7 +242,7 @@ function UserRegister({handleClick}) {
                                 >Verify</button>
                             </div>
                         </form>
-                    } */}
+                    }
                 </div>
             </div>
             <ToastContainer />
