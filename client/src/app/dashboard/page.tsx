@@ -9,7 +9,7 @@ import { preventDefault } from '@fullcalendar/common';
 import Calendar from '@/components/Calendar/Calendar';
 import EventForm from '@/components/CreateEvent/CreateEvent';
 import CreateEvent from '@/components/CreateEvent/CreateEvent';
-import { LocationProvider, useLocationContext } from '@/context/LocationContext';
+import { LocationProvider, useLocation, } from '@/context/LocationContext';
 import dynamic from 'next/dynamic';
 
 const BrowseMap = dynamic(() => import("@/components/MapBox/BrowseMap"), {
@@ -17,9 +17,11 @@ const BrowseMap = dynamic(() => import("@/components/MapBox/BrowseMap"), {
   ssr: false
 });
 
+
 const dashboard = () => {
   
   const [isCreateActive, setIsCreateActive] = useState(false);
+  const {location, handleLocation} =useLocation();
   const[allEvents, setAllEvents]=useState([]);
   const [isBrowseActive, setIsBrowseActive] = useState(false);
   // const [location, setLocation] = useState({latitude: 0, longitude: 0});
@@ -33,9 +35,8 @@ const dashboard = () => {
   }
 
 
-  const handleBrowseMap = (event: any)=>{
+  const handleBrowseMap = (event:any)=>{
     event.preventDefault();
-    
     setIsBrowseActive(!isBrowseActive);
   }
 
@@ -52,6 +53,7 @@ const dashboard = () => {
           <div className="absolute w-[94vw] left-[3vw] right-[3vw] h-[94vh] top-[3vh] bottom-[3vh] z-50">
             <LocationProvider>
               <BrowseMap handleBrowseMap={handleBrowseMap}/>
+              
             </LocationProvider>
           </div>
         }

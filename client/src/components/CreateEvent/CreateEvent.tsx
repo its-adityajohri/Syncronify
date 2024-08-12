@@ -1,9 +1,9 @@
 "use client";
-import {FaMapMarked, FaPlus } from 'react-icons/fa';
-import React, { ReactNode, useState } from 'react';
+import {FaCheck, FaMapMarked, FaMarkdown, FaMarsStrokeV, FaPlus } from 'react-icons/fa';
+import React, { ReactNode, useEffect, useState } from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { useLocationContext } from '@/context/LocationContext';
+import { useLocation } from '@/context/LocationContext';
 import getPlaces from '../MapBox/API/getPlaces';
 import { Button } from '../ui/button';
 import { useDropzone } from 'react-dropzone';
@@ -28,7 +28,7 @@ const CreateEvent: React.FC<CreateEventProps> = ({
   }[]>([]);
 
   const {createNewEvent} = useEvent();
-  const {location, setLocation, handleLocation}=useLocationContext();
+  const {location, setLocation, handleLocation}=useLocation();
 
   const [eventDetail, setEventDetail]=useState<{
     title: string,
@@ -45,6 +45,11 @@ const CreateEvent: React.FC<CreateEventProps> = ({
     toDate:new Date(),
     imageUrl: '',
   })
+
+  useEffect(() => {
+    console.log('Location in CreateEvent updated:', location);
+  }, [location]);
+  
 
   const handleChange=(event:any)=>{
     const {name, value}=event.target;
@@ -208,7 +213,8 @@ const CreateEvent: React.FC<CreateEventProps> = ({
                 </li>
               )}
             </ul>
-            <Button className='flex gap-2 items-center text-md' onClick={handleBrowseMap}>Choose from map <FaMapMarked/></Button>
+            <Button className='flex gap-2 items-center text-md outline-2' style={{outline: location===null?"#4aca6c": '#ac1c1c'}} onClick={handleBrowseMap}>Choose from map <FaMapMarked/></Button>
+            {location?.selected? <div className=" text-green-700 outline outline-2 p-1 rounded -ml-16"><FaCheck/></div>:''}
           </div>
           <div className='flex gap-10'>
             <Button className='font-semibold text-lg'>Create</Button>
