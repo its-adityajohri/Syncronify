@@ -2,34 +2,52 @@
 
 import "./MapBox.css";
 import ReactMapGl, { Marker, GeolocateControl, NavigationControl } from "react-map-gl";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import pointerIcon from "/pointer.svg";
 import getPlaces from './API/getPlaces';
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { useLocationContext } from "@/context/LocationContext";
+import { useLocation } from "@/context/LocationContext";
 // import {location, setLocation, handleLocation} from 
 
 const TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
 
 function BrowseMap({handleBrowseMap}) {
-
-    const {location, setLocation, handleLocation} = useLocationContext();
     const [viewport, setViewport] = useState({
         latitude : 26.512339,
         longitude : 80.2329,
         zoom: 15,
     });
 
-    const [marker, setMarker] = useState({
-        name:'',
-        latitude : 26.512339,
-        longitude : 80.2329,
-    });
+    const [userLocation, setUserLocation]=useState({
+        latitude: viewport.latitude,
+        longitude: viewport.longitude,
+    })
 
-    const handleMarkerDrag = (event) => {
+    useEffect(() => {
+            navigator.geolocation.getCurrentPosition(pos => {
+                setUserLocation({
+                  ...userLocation,
+                  longitude: pos.coords.longitude,
+                  latitude: pos.coords.latitude,
+            });
+            setViewport({
+                ...viewport,
+                longitude: pos.coords.longitude,
+                latitude: pos.coords.latitude,
+          });
+
+            console.log(pos.coords);
+            });
+        }, []);
+
+
+
+    const {location, handleLocation} = useLocation();
+
+    const handleMarkerDrag = (event:any) => {
         const latitude = event.lngLat.lat;
         const longitude = event.lngLat.lng;
-        setMarker({name:'', latitude, longitude });
+        setUserLocation({latitude, longitude });
         setViewport((oldViewport) => ({
         ...oldViewport,
         latitude,
@@ -37,10 +55,10 @@ function BrowseMap({handleBrowseMap}) {
         }));
     };
 
-    const handleClick = (event) => {
+    const handleClick = (event:any) => {
         const latitude = event.lngLat.lat;
         const longitude = event.lngLat.lng;
-        setMarker({name:'', latitude, longitude });
+        setUserLocation({latitude, longitude });
         setViewport((oldViewport) => ({
             ...oldViewport,
             latitude,
@@ -51,23 +69,23 @@ function BrowseMap({handleBrowseMap}) {
     const [suggestions, setSuggestions] = useState([]);
     const [value, setValue] = useState('');
 
-    const handleOnChange = (event) => {
+    const handleOnChange = (event:any) => {
         setValue(event.target.value);
         handleInputChange(event.target.value);
     }
 
-    const handleInputChange = async (query) => {
+    const handleInputChange = async (query:any) => {
         const suggesions = await getPlaces(query);
         setSuggestions(suggesions);
     };
 
-    const handleSuggestionClick = (suggestion) => {
+    const handleSuggestionClick = (suggestion:any) => {
         const streetAndNumber = suggestion.place_name.split(",")[0];
         const latitude = suggestion.center[1];
         const longitude = suggestion.center[0];
 
         setValue(streetAndNumber);
-        setMarker({name:suggestion?.place_name, latitude, longitude});
+        // setUserLocation({latitude, longitude});
         setViewport((oldViewport) => ({
             ...oldViewport,
             latitude,
@@ -77,11 +95,12 @@ function BrowseMap({handleBrowseMap}) {
     };
 
     const handleConfirmLocation = (event: any) => {
-        const {latitude, longitude}= marker;
+        const {latitude, longitude}= userLocation;
         const name=location? location.name:'';
-        setLocation({name, latitude, longitude})
-        console.log(marker);
-        // event.preventDefault();
+        // setLocation({name, latitude, longitude, selected: true});
+        handleLocation({name, latitude, longitude, selected: true});
+        console.log("location",location);
+        console.log("userLocation",userLocation)
         handleBrowseMap(event);
 
     }
@@ -121,20 +140,20 @@ function BrowseMap({handleBrowseMap}) {
                 onDblClick={handleClick}
             >
                 <Marker
-                latitude={marker.latitude}
-                longitude={marker.longitude}
+                latitude={userLocation.latitude}
+                longitude={userLocation.longitude}
                 draggable={true}
                 onDragEnd={handleMarkerDrag}
                 >
-                <img className="w-[40px] h-[40px] z-30" src="/pointer.svg" alt="pointer" />
+                <img className="w-[40px] h-[40px] z-30" src="/icons/pointer.svg" alt="pointer" />
                 </Marker>
                 <GeolocateControl 
                     positionOptions={{enableHighAccuracy: true}}
                     trackUserLocation={true}
                     // auto
-                    className="z-[1]"
+                    // className="z-[1]"
                 />
-                <NavigationControl className="z-[1]"/>
+                <NavigationControl/>
             </ReactMapGl>
         </div>
         </ div>

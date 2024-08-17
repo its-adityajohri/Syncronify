@@ -93,19 +93,10 @@ const LandingPage = () => {
 
       {/* {{{============Feature Intro Start======================}}} */}
       <section className="flex gap-10 sm:gap-0 flex-wrap justify-between mx-20 -mt-32">
-        {/* <div className="w-[250px] h-[250px] bg-gray-100 rounded-2xl"></div>
-        <div className="w-[250px] h-[250px] bg-gray-100 rounded-2xl"></div>
-        <div className="w-[250px] h-[250px] bg-gray-100 rounded-2xl"></div>
-        <div className="w-[250px] h-[250px] bg-gray-100 rounded-2xl"></div>
-        <div className="w-[250px] h-[250px] bg-gray-100 rounded-2xl"></div> */}
         {cardDetail.map((detail, i)=>(
           <LandingCard detail={detail}/>
         ))}
-        {/* <LandingCard/>
-        <LandingCard/> */}
       </section>
-      <ChatButton onClick={toggleChat} />
-      {showChat && <ChatInterface onClose={toggleChat} />}
     </div>
     
   )
