@@ -85,8 +85,8 @@ const SideBar = ({routes}: {routes: Route[]}) => {
     <div className="" onMouseEnter={()=>handleSidebar(true)}>  
       <div className="rounded-full w-10 h-10 text-center bg-black p-2 mb-8 mx-auto">SF</div>
       <div className="flex flex-col text-xl items-center">
-        {routes.map((route)=>(
-          <Link href={route.path} className="w-[100%] flex justify-center hover:bg-gray-900">
+        {routes.map((route, i)=>(
+          <Link href={route.path} key={i} className="w-[100%] flex justify-center hover:bg-gray-900">
             <span className="px-8 py-4">{route.icon}</span>
           </Link>
         ))}

@@ -6,11 +6,13 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { login } from '@/lib/features/authentication/authSlice';
+import { logIn } from '@/lib/features/authentication/authSlice';
+import { useAuth } from '@/context/AuthContext';
 
 function Login({handleClick}) {
-    const dispatch = useAppDispatch();
-    const authenticatedUser = useAppSelector((state: any)=>state.auth.user);
+    // const dispatch = useAppDispatch();
+    // const authenticatedUser = useAppSelector((state: any)=>state.auth.user);
+    const {login}=useAuth();
 
     const router=useRouter();
 
@@ -20,7 +22,7 @@ function Login({handleClick}) {
     // const [selectedRole, setSelectedRole]=useState('');
 
     const[user, setUser]=useState({
-        username: '',
+        email: '',
         password: '',
         role: ''
     });
@@ -50,32 +52,36 @@ function Login({handleClick}) {
         });
     }
 
-    function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        const {username, password, role}=user;
+        const {email, password, role}=user;
         notify();
 
         try {
             // fetch request to check if user does exist....
+            const response = await login({email, password, userType:role});
+            // if (response.status === 200) {
+                return console.log(response);
+            // }
         } catch (error) {
-            // 
+            console.error(error);
         }
-        dispatch(login({username, password, role}));
-        switch (user.role) {
-            case 'user':
-                router.push('/dashboard');
-                break;
-            case 'admin':
-                router.push('/admin-dashboard')
-                break;
-            case 'application admin':
-                router.push( '/application-admin-dashboard' );
-                break;
-            default:
-                alert( `Unknown user type ${user.role}` )
-                break;
-        }
-        console.log(authenticatedUser.password);
+        // dispatch(logIn({username, password, role}));
+        // switch (user.role) {
+        //     case 'user':
+        //         router.push('/dashboard');
+        //         break;
+        //     case 'admin':
+        //         router.push('/admin-dashboard')
+        //         break;
+        //     case 'application admin':
+        //         router.push( '/application-admin-dashboard' );
+        //         break;
+        //     default:
+        //         alert( `Unknown user type ${user.role}` )
+        //         break;
+        // }
+        // console.log(authenticatedUser.password);
     }
 
     return (
@@ -101,16 +107,16 @@ function Login({handleClick}) {
                     <form onSubmit={handleSubmit} className='mt-8'>
                         <div className='space-y-2'>
                             <label
-                                htmlFor='username'
+                                htmlFor='email'
                                 className="inline-block mt-2 pl-1 text-bf"
-                            >Username</label>
+                            >Email</label>
                             <input
-                                type='text' 
-                                id='username'
-                                value={user.username}
+                                type='email' 
+                                id='email'
+                                value={user.email}
                                 onChange={handleChange}
                                 className={`px-3 py-2 rounded-lg outline-none duration-200 border text-[#1B1B1B] bg-slate-50 border-gray-200 w-full focus:text-gray-50 focus:bg-black`}
-                                placeholder='Username' />
+                                placeholder='email' />
                         </div>
 
                         <div className='space-y-2'>
@@ -131,9 +137,9 @@ function Login({handleClick}) {
                             <label htmlFor="role" className='inline-block mt-2 pl-1 text-bf'>Select Role:</label>
                             <select id="role" value={user.role} onChange={handleChange} className='px-3 py-2 rounded-lg outline-none duration-200 border text-[#1B1B1B] bg-slate-50 border-gray-200 w-full focus:text-gray-50 focus:bg-black'>
                                 <option value="">Select a role</option>
-                                <option value="user">User</option>
-                                <option value="admin">Admin</option>
-                                <option value="application admin">Application Admin</option>
+                                <option value="genUser">User</option>
+                                <option value="adminUser">Admin</option>
+                                <option value="applicationAdminUser">Application Admin</option>
                                 {/* Add more options as needed */}
                             </select>
                             {/* Display selected role */}

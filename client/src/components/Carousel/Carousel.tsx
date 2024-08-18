@@ -69,7 +69,7 @@ const LocalCarousel = () => {
       <Carousel className="m-auto w-[90%]">
         <CarouselContent>
           {cardDetails.map((event, i) => (
-            <CarouselItem className="basis-1/5">
+            <CarouselItem className="basis-1/5" key={i}>
               <Card className="relative bg-gray-300/70 rounded-xl">
                 {/* <Image alt='image' src='/carousel_bg.jpeg' fill className=''/> */}
                 <CardHeader>

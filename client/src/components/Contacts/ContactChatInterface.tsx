@@ -8,13 +8,14 @@ interface ContactChatInterfaceProps {
 const ContactChatInterface: React.FC<ContactChatInterfaceProps> = ({ onClose }) => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<string[]>([]);
+  const isSender=true;
   const [scrollToBottom, setScrollToBottom] = useState(false);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(event.target.value);
   };
 
-  const handleSendClick = (e) => {
+  const handleSendClick = (e:any) => {
     e.preventDefault()
     if (message.trim() !== '') {
       setMessages([...messages, message]);
@@ -43,10 +44,10 @@ const ContactChatInterface: React.FC<ContactChatInterfaceProps> = ({ onClose }) 
           Close
         </button> */}
       </div>
-      <div id='chatMessages' className="chatMessages flex flex-col items-end gap-1">
+      <div id='chatMessages' className="chatMessages flex flex-col gap-1">
         {messages.map((msg, index) => (
-          <div key={index} className="contactMessage rounded-[5px] bg-gray-300/70">
-            {msg}
+          <div key={index} className={`contactMessage ${isSender?'ml-auto':'mr-auto'}`}>
+            <p className={`bg-gray-300/90 p-2 rounded-md max-w-fit shadow-xl ${isSender?'bg-blue-400 text-white':'text-black'}`}>{msg}</p>
           </div>
         ))}
       </div>
